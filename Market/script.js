@@ -147,16 +147,10 @@ const handleFilter = () => {
     let priceMax = Number(form.elements[2].value);
     let category = form.elements["filter-category"].value;
 
-    filteredIdx = dbProduct.findIndex((value) => {
-        return value.name == name
-    })
-
     dbProduct = dbProduct.filter((value) => {
         return value.name == name
     })
 
-    filteredIdx = null;
-    
     printProduct()
 }
 
@@ -174,19 +168,6 @@ function printProduct() {
             <td>
             <button type="button" onclick="handleSave(${index})">Save</button>
             <button type="button" onclick="handleCancel(${index})">Cancel</button>
-            </td>
-            </tr>`
-        } else if (filteredIdx == index) {
-            return `<tr>
-            <td>${value.sku}</td>
-            <td><img src="${value.img}" width="50px"></td>
-            <td>${value.name}</td>
-            <td>${value.category}</td>
-            <td>${value.stock.toLocaleString()}</td>
-            <td>IDR${value.price.toLocaleString()}</td>
-            <td>
-            <button type="button" onclick="handleEdit(${index})">Edit</button>
-            <button type="button" onclick="handleDelete(${index})">Delete</button>
             </td>
             </tr>`
         } else {
