@@ -1,0 +1,160 @@
+<!-- ketik html:5 akan muncul struktur html terbaru dan biasa dipakai untuk buat web-->
+<!-- html xml biasanya dipakai untuk android native -->
+<!-- html bukanlah bhs pemrograman, hanya bahasa struktur; css = pakaian, html = tulang, javascript = otot & daging -->
+<!-- <!DOCTYPE html> untuk mengindikasikan jika menggunakan html 5 -->
+<!DOCTYPE html>
+
+<!-- elemen di dlm html ada root utama yang memiliki root turunan -->
+<!-- <html lang="en"> utk mengindikasikan kita membuat tag html dan tag ini adalah root element / root utama -->
+<html lang="en">
+
+<!-- tag elemen <head> <body> adalah turunan elemen html -->
+
+<head>
+    <!-- tag elemen <meta> <title> adalah turunan elemen head -->
+    <!-- isi tag elemen head adalah informasi website -->
+    <!-- yg edit meta set itu terkait request SEO / Search Engine Optimization -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro HTML</title>
+</head>
+
+<body>
+    <!-- tag elemen <body> adalah isi dari html -->
+    <div>
+        <!-- div = elemen turunan dari body -->
+        <!-- fungsi div memecah ke beberapa section / membagi bagian dari website untuk mengelompokkan elemen2 -->
+        <!-- elemen heading ada dr 1 sd 6 -->
+        <!-- elemen heading akan mengikuti ukuran layar -->
+        <h1> Hello One</h1>
+        <h2> Hello Two</h2>
+        <h3> Hello Three</h3>
+        <h4> Hello Four</h4>
+        <h5> Hello Five</h5>
+        <h6> Hello Six</h6>
+
+        <!-- saat ketik lorem akan muncul template lorem ipsum bla bla -->
+        <!-- elemen <p> akan mengikuit ukuran layar -->
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel quis voluptate minus
+            natus repellendus nostrum dolore harum
+            vitae modi enim! Beatae corrupti, doloribus <br/>
+            optio expedita vero animi ut error officia.</p>
+
+        <!-- yang paling sering digunakan di div itu heading dan <p> -->
+        <!-- elemen bold italic underline jarang digunakan karena lebih prefer pakai css styling supaya ga kebanyakan elemen -->
+        <!-- elemen <b> dan <i> mengikuti ukuran content jadi akan terus kesamping -->
+        <!-- cara meng-enter isi elemen <b> dan <i> gunakan <br/> -->
+        <b>Elemen bold</b>
+        <br />
+        <i>Elemen italic</i>
+        <u>Elemen underline</u>
+
+        <!-- ordered list -->
+        <!-- untuk ganti tipe urutan apakah abc atau 123 -->
+        <ol type="a">
+            <!-- untuk buat urutan -->
+            <!-- <li> si penomoran dan by default dari nomor 1 2 3 ... -->
+            <li>Fundamental</li>
+            <li>Front End</li>
+            <li>Back End</li>
+        </ol>
+
+        <!-- unordered list -->
+        <ul>
+            <!-- default berupa bullet point, untuk ganti pakai css styling biasanya -->
+            <!-- untuk buat navigation bar biasanya -->
+            <li>Home</li>
+            <li>Profile</li>
+            <li>Setting</li>
+        </ul>
+
+        <!-- element input -->
+        <!-- berupa single tag karena tidak butuh content didalamnya -->
+        <!-- heading, <p>, <li> perlu double tag (ada </heading>) karena ada content di dalamnya -->
+        <!-- untuk input text -->
+        <input type="text" placeholder="Input name" />
+        <!-- untuk input angka dan ada up down button otomatis -->
+        <input type="number" />
+        <!-- untuk input password -->
+        <input type="password" placeholder="Min.8" />
+        <input type="checkbox" />
+
+        <!-- cuma bisa pilih salah satu jadi pakai radio -->
+        <input type="radio" />
+
+        <select>
+            <!-- untuk buat dropdown list -->
+            <option>Pilih data</option>
+        </select>
+
+        <!-- untuk memberikan catatan atau deskripsi dengan ukuran lebih luas dari input text-->
+        <textarea placeholder="Note">
+            CATATAN
+        </textarea>
+
+        <!-- buat button ada 2 cara -->
+        <!-- cara 1 -->
+        <input type = "button" value = "Button 1"/>
+        <!-- cara 2 -->
+        <button>Button 2</button>
+        
+        <!-- ### atribut adalah value untuk atur elemen, contohnya: id, class, style, width, type ### -->
+
+        <!-- untuk menampilkan image -->
+        <!-- cara 1: absolute path / link-->
+        <!-- berarti ingin tampilkan gambar dr url link yg sudah ada secara online -->
+        <!-- alt alternatif saat gambar online ga muncul -->
+        <!-- width untuk atur size gambar -->
+        <img src="https://saintif.com/wp-content/uploads/2020/07/kartun2.jpg" 
+        alt = "image-code"
+        width="10%"
+        />
+        <!-- cara 2: Relative path/link -->
+        <!-- gambar dari directori project itu sendiri -->
+        <img
+        src = "forLoopStep.png" 
+        alt = "random-image"
+        width = "250px"
+        />
+
+        <!-- untuk buat tabel -->
+        <!-- tabel yg dibentuk dpt diborderin pakai styling -->
+        <table>
+            <thead>
+                <!-- thead table head untuk membuat header -->
+                <!-- th table header -->
+                <!-- biasanya table header jarang berubah2 -->
+                <th>No</th>
+                <th>Name</th>
+                <th>Age</th>
+            </thead>
+            <tbody>
+                <!-- content dari table -->
+                <tr>
+                    <!-- tr table row -->
+                    <!-- td table data -->
+                    <td>1</td>
+                    <td>Abdi</td>
+                    <td>27</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Renold</td>
+                    <td>32</td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+</body>
+
+
+<!-- <script> untuk jalanin fungsi javascript, bisa ditaruh setelah </body> ATAU sesudah tag elemen </html> -->
+<script>
+        
+</script>
+
+<!-- dom document object model merupakan fungsi dr jvscript untuk mengakses elemen html dan memanipulasi tampilan html -->
+<!-- menggunakan berarti kita memanggil suatu elemen html ke dalam jvscript sebagai object -->
+</html>

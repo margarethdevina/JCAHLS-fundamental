@@ -1,0 +1,69 @@
+<script>
+    /**
+     * buat aplikasi untuk cek sebuah kata polindrom atau bukan 
+     * polindrom berarti kata dibolak balik sama aja urutan hurufnya
+     * misal malam = malam, level = level, tamat = tamat, isi = isi, katak = katak, apa = apa
+     * 
+     * //// cara 1 ////
+     * step:
+     *  1. input katanya misal "dor"
+     *  2. lowercase input dan split input jadi array per huruf
+     *      lowercase itu untuk ensure perbandingan nantinya cuma urutan huruf aja
+     *      hasil .split(``) nantinya jadi ["d","o","r"]
+     *  3. harus displit karena fungsi reverse cuma bisa diterapin ke array
+     *      hasil .reverse() nantinya array jadi ["r","o","d"]
+     *  4. setelah direverse gunakan fungsi join(``) untuk gabungin semua huruf yang sudah dibalik
+     *      hasil .join(``) nantinya "rod"
+     *  5. buat alert hasil perbandingan
+     *  6. buat konfirmasi
+     */
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let text = prompt(`masukan kata yang mau dicek polindrom atau bukan`);
+
+        if (text.toLowerCase() == text.toLowerCase().split(``).reverse().join(``)) {
+            alert(`kata ${text} merupakan polindrom`);
+        } else {
+            alert(`kata ${text} bukan merupakan polindrom (${text.toLowerCase().split(``).reverse().join(``)})`);
+        }
+
+        konfirmasi = confirm(`mau cek kata lainnya?`);
+
+        if (!konfirmasi) {
+            konfirmasi = false;
+        }
+    }
+
+    //// cara 2 for loop ////
+
+    // let konfirmasi = true;
+
+    // while (konfirmasi) {
+
+    //     let text = prompt(`masukan kata yang mau dicek polindrom atau bukan`);
+
+    //     let reverse = ``; // untuk menampung hasil reverse nanti
+
+    //     for (let i = text.length - 1; i >= 0; i--) { //length minus 1 karena index dimulai dari 0 jadi klo dibalik perlu di minus 1
+    //         reverse += text.charAt(i); // bisa pakai task ini juga: reverse += text[i];
+    //         // .charAt(index) untuk tarik karakter / huruf pada index di dalam bracket ()
+    //         // string[i] untuk langsung tarik karakter / huruf pada index di dalam bracket []
+    //     }
+
+    //     if (text.toLowerCase() == reverse.toLowerCase()) {
+    //         alert(`kata ${text} merupakan polindrom`);
+    //     } else {
+    //         alert(`kata ${text} bukan merupakan polindrom (${reverse})`);
+    //     }
+
+    //     konfirmasi = confirm(`mau cek kata lainnya?`);
+
+    //     if (!konfirmasi) {
+    //         konfirmasi = false;
+    //     }
+    // }
+
+</script>

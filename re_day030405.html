@@ -1,0 +1,274 @@
+<script>
+    /**
+     * buat aplikasi untuk: lihat, tambah, hapus, dan edit data.
+     */
+
+    //// DAY 03 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FOR LOOP STATEMENT untuk fitur lihat data /////
+
+    // let database = [`Kimetsu no Yaiba`, `Blue Period`];
+
+    // let konfirmasi = true;
+
+    // while (konfirmasi) {
+
+    //     let list = ``;
+
+    //     for (let i = 0; i < database.length; i++) {
+    //         list += `${i + 1}. ${database[i]}\n`
+    //     };
+
+    //     let menu = prompt(`Silahkan memilih fitur dari menu berikut:
+    // 1. Lihat data
+    // 2. Tambah data
+    // 3. Hapus data
+    // 4. Edit data`);
+
+    //     if (menu == `1`) {
+    //         // fitur lihat data
+    //         alert(`List anime:\n${list}`)
+    //     } else if (menu == `2`) {
+    //         // fitur tambah data
+    //         let newData = prompt(`Masukkan judul anime yang mau ditambahkan ke list`)
+    //         database.push(newData) // bisa juga pakai database[database.length] = newData
+    //     } else if (menu == `3`) {
+    //         // fitur hapus data
+    //         let nomor = parseInt(prompt(`List anime:\n${list}\nPilih nomor yang datanya ingin dihapus`))
+    //         database.splice(nomor - 1, 1)
+    //     } else if (menu == `4`) {
+    //         // fitur edit data
+    //         let nomor = parseInt(prompt(`List anime:\n${list}\nPilih nomor yang datanya ingin diedit`))
+    //         let newData = prompt(`Masukkan judul animenya`)
+    //         database[nomor - 1] = newData
+    //     } else {
+    //         alert(`Fitur yang dipilih tidak ada`)
+    //     };
+
+    //     konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+    //     if (!konfirmasi) {
+    //         konfirmasi = false
+    //     };
+
+    // }
+
+    //// DAY 04 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FUNCTION untuk loop fitur lihat data /////
+
+    // let database = [`Kimetsu no Yaiba`, `Blue Period`];
+
+    // let konfirmasi = true;
+
+    // const printList = () => {
+    //     let list = ``
+    //     for (let i = 0; i < database.length; i++) {
+    //         list += `${i + 1}. ${database[i]}\n`
+    //     }
+    //     return list
+    // }
+
+    // while (konfirmasi) {
+
+    //     let menu = prompt(`Silahkan memilih fitur dari menu berikut:
+    // 1. Lihat data
+    // 2. Tambah data
+    // 3. Hapus data
+    // 4. Edit data`);
+
+    //     if (menu == `1`) {
+    //         // fitur lihat data
+    //         alert(`List anime:\n${printList()}`)
+    //     } else if (menu == `2`) {
+    //         // fitur tambah data
+    //         let newData = prompt(`Masukkan judul anime yang mau ditambahkan ke list`)
+    //         database.push(newData)
+    //     } else if (menu == `3`) {
+    //         // fitur hapus data
+    //         let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin dihapus`))
+    //         database.splice(nomor - 1, 1)
+    //     } else if (menu == `4`) {
+    //         // fitur edit data
+    //         let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin diedit`))
+    //         let newData = prompt(`Masukkan judul animenya`)
+    //         database[nomor - 1] = newData
+    //     } else {
+    //         alert(`Fitur yang dipilih tidak ada`)
+    //     };
+
+    //     konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+    //     if (!konfirmasi) {
+    //         konfirmasi = false
+    //     };
+
+    // }
+
+    //// DAY 04 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FUNCTION .forEach() untuk loop fitur lihat data yang bertipe array /////
+
+    // let database = [`Kimetsu no Yaiba`, `Blue Period`];
+
+    // let konfirmasi = true;
+
+    // const printList = () => {
+    //     let list = ``
+    //     database.forEach((value, index) => {
+    //         list += `${index + 1}. ${value}\n`
+    //     })
+    //     return list
+    // };
+
+    // while (konfirmasi) {
+
+    //     let menu = prompt(`Silahkan memilih fitur dari menu berikut:
+    // 1. Lihat data
+    // 2. Tambah data
+    // 3. Hapus data
+    // 4. Edit data`);
+
+    //     if (menu == `1`) {
+    //         // fitur lihat data
+    //         alert(`List anime:\n${printList()}`)
+    //     } else if (menu == `2`) {
+    //         // fitur tambah data
+    //         let newData = prompt(`Masukkan judul anime yang mau ditambahkan ke list`)
+    //         database.push(newData)
+    //     } else if (menu == `3`) {
+    //         // fitur hapus data
+    //         let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin dihapus`))
+    //         database.splice(nomor - 1, 1)
+    //     } else if (menu == `4`) {
+    //         // fitur edit data
+    //         let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin diedit`))
+    //         let newData = prompt(`Masukkan judul animenya`)
+    //         database[nomor - 1] = newData
+    //     } else {
+    //         alert(`Fitur yang dipilih tidak ada`)
+    //     };
+
+    //     konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+    //     if (!konfirmasi) {
+    //         konfirmasi = false
+    //     };
+
+    // }
+
+    //// DAY 04 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FUNCTION .map() untuk loop fitur lihat data yang bertipe array /////
+
+    // let database = [`Kimetsu no Yaiba`, `Blue Period`];
+
+    // let konfirmasi = true;
+
+    // const printList = () => {
+    //     return database.map((value, index) => {
+    //         return `${index + 1}. ${value}`
+    //     }).join(`\n`)
+    // };
+
+    // while (konfirmasi) {
+
+    //     let menu = prompt(`Silahkan memilih fitur dari menu berikut:
+    // 1. Lihat data
+    // 2. Tambah data
+    // 3. Hapus data
+    // 4. Edit data`);
+
+    //     if (menu == `1`) {
+    //         // fitur lihat data
+    //         alert(`List anime:\n${printList()}`)
+    //     } else if (menu == `2`) {
+    //         // fitur tambah data
+    //         let newData = prompt(`Masukkan judul anime yang mau ditambahkan ke list`)
+    //         database.push(newData)
+    //     } else if (menu == `3`) {
+    //         // fitur hapus data
+    //         let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin dihapus`))
+    //         database.splice(nomor - 1, 1)
+    //     } else if (menu == `4`) {
+    //         // fitur edit data
+    //         let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin diedit`))
+    //         let newData = prompt(`Masukkan judul animenya`)
+    //         database[nomor - 1] = newData
+    //     } else {
+    //         alert(`Fitur yang dipilih tidak ada`)
+    //     };
+
+    //     konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+    //     if (!konfirmasi) {
+    //         konfirmasi = false
+    //     };
+
+    // }
+
+    //// DAY 04 - DATABASE DALAM BENTUK OBJECT //// ❗❗
+
+    ///// FUNCTION .map() untuk loop fitur lihat data yang bertipe array of object /////
+
+    let database = [
+        {
+            title: `Kimetsu no Yaiba`,
+            rating: 10,
+            viewer: 1e7
+        },
+        {
+            title: `Blue Period`,
+            rating: 8,
+            viewer: 6e6
+        }
+    ];
+
+    let konfirmasi = true;
+
+    const printList = () => {
+        return database.map((value, index) => {
+            return `${index + 1}. ${value.title} memiliki rating ${value.rating} dan jumlah viewer ${value.viewer}`
+        }).join(`\n`)
+    };
+
+    while (konfirmasi) {
+
+        let menu = prompt(`Silahkan memilih fitur dari menu berikut:
+    1. Lihat data
+    2. Tambah data
+    3. Hapus data
+    4. Edit data`);
+
+        if (menu == `1`) {
+            // fitur lihat data
+            alert(`List anime:\n${printList()}`)
+        } else if (menu == `2`) {
+            // fitur tambah data
+            let newData = {
+                title: prompt(`Masukkan judul anime yang mau ditambahkan ke list`),
+                rating: Number(prompt(`Berapa rating anime tersebut saat ini?`)),
+                viewer: Number(prompt(`Berapa jumlah penontonnya saat ini?`))
+            }
+            database.push(newData)
+        } else if (menu == `3`) {
+            // fitur hapus data
+            let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin dihapus`))
+            database.splice(nomor - 1, 1)
+        } else if (menu == `4`) {
+            // fitur edit data
+            let nomor = parseInt(prompt(`List anime:\n${printList()}\nPilih nomor yang datanya ingin diedit`))
+            let newData = {
+                title: prompt(`Masukkan judul anime yang mau ditambahkan ke list`),
+                rating: Number(prompt(`Berapa rating anime tersebut saat ini?`)),
+                viewer: Number(prompt(`Berapa jumlah penontonnya saat ini?`))
+            }
+            database[nomor - 1] = newData
+        } else {
+            alert(`Fitur yang dipilih tidak ada`)
+        };
+
+        konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+        if (!konfirmasi) {
+            konfirmasi = false
+        };
+
+    }
+
+</script>

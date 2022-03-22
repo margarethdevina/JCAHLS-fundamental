@@ -1,0 +1,135 @@
+<script>
+    /**
+     * buat aplikasi untuk tambah produk, beli produk, cek stok
+     * db dlm btk array of object
+     * buat cek stok dari db yg ada dulu
+     * buat fitur beli, pas beli, produk yg dipilih dimention, buat protection:
+     *      kalau jumlah yg mau dibeli > stok => gagal beli
+     *      kalau uang masuk < total yg hrs dibayar => gagal beli
+     * update db saat pembelian berhasil
+     * pas tambah produk ada notif berhasil tambah
+     * buat fitur tambahan:
+     *      tanya mau ulang masukkan kuantiti yg benar ga klo gagal beli krn stok kurang, apply yg sm untuk duit kurang
+     *      saat tambah produk berhasil, muncul updated list produk
+     *      menu utama cuma 3, pilih selain itu akan muncul notif menu yg dipilih ga ada
+     * konfirmasi mau ke menu utama atau logoff
+     */
+
+    /**
+     * DAY 07, edit tambah produk untuk apply pelajaran class of object
+     * buat class untuk Produk dan turunannya (FnB) dgn properti selain method():
+     *      Produk (name,stock,price)
+     *      FnB (type, expDate) => type FnB bisa bervalue Food/Beverage atau Makanan/Minuman; expDate dlm format dd-mm-yyyy
+     * buat method() untuk merecord info Produk di mana kalau produk bukan FnB berarti pakai cetakan Produk, ...
+     * ... kalau produk FnB menggunakan cetakan FnB.
+     * dari menu utama saat pilih menu 1 akan ditanya kategori produk: Non-FnB atau FnB
+     * saat pilih non-fnb, tamu akan isi keterangan sesuai cetakan Produk, begitu pula sebaliknya untuk fnb
+     * 
+     */
+
+    class Produk {
+        constructor(_name, _stock, _price) {
+            this.name = _name;
+            this.stock = _stock;
+            this.price = _price;
+        }
+        getInfo = (numb, expDate = null) => {
+            if (expDate) {
+                return `${numb + 1}. ${this.name}, stok ${this.stock}, price per produk Rp${this.price.toLocaleString()}, expired ${expDate}`
+            } else {
+                return `${numb + 1}. ${this.name}, stok ${this.stock}, price per produk Rp${this.price.toLocaleString()}`
+            }
+        }
+    }
+
+    class Fnb extends Produk {
+        constructor(_name, _stock, _price, _type, _expDate) {
+            super(_name, _stock, _price);
+            this.type = _type;
+            this.expDate = _expDate;
+        }
+    }
+
+    let produk = [];
+
+    const printList = () => produk.map((value, index) => {
+        return value.getInfo(index, value.expDate)
+    }).join(`\n`)
+
+    while (true) {
+
+        let menuUtama = prompt(`Selamat datang di toko Starling!
+        Pilih salah satu nomor dari menu utama berikut:
+        1. Tambah produk
+        2. Beli produk
+        3. Cek stok`);
+
+        if (menuUtama == 1) {
+            // tambah produk
+            let kategori = prompt(`Pilih kategori produk baru
+            1. Non-FnB
+            2. FnB`);
+
+            let name = prompt(`Masukkan nama produk yang baru`);
+            let stock = Number(prompt(`Masukkan jumlah stoknya`));
+            let price = Number(prompt(`Masukkan price per itemnya`));
+
+            if (kategori == 1) {
+                produk.push(new Produk(name, stock, price))
+                alert(`Produk berhasil ditambah, berikut update stoknya\n${printList()}`)
+            } else if (kategori == 2) {
+                //  kategori FnB
+                let type = prompt(`Termasuk tipe Makanan atau Minuman?`);
+                let expDate = prompt(`Masukkan tanggal kadaluarsa dengan format dd-mm-yyyy`);
+                produk.push(new Fnb(name, stock, price, type, expDate))
+                alert(`Produk berhasil ditambah, berikut update stoknya\n${printList()}`)
+            } else {
+                alert(`Salah pilih kategori produk baru`);
+            };
+        } else if (menuUtama == 2) {
+            // beli produk
+            let pilihanBeli = Number(prompt(`Berikut stok terupdate:\n${printList()}\nIngin beli produk yang mana?`)) - 1;
+
+            while (true) {
+                if (pilihanBeli > produk.length - 1) {
+                    alert(`Nomor produk yang dipilih tidak ada`)
+                    break;
+                } else {
+                    let stockBeli = Number(prompt(`Mau beli ${produk[pilihanBeli].name} berapa banyak?`));
+
+                    if (stockBeli <= produk[pilihanBeli].stock) {
+                        let totalBeli = stockBeli * produk[pilihanBeli].price;
+                        let totalBayar = Number(prompt(`Total yang harus dibayar Rp${totalBeli.toLocaleString()}\nMasukkan jumlah uang yang akan anda transfer`));
+                        if (totalBayar >= totalBeli) { // total pembayaran >= total pembelian
+                            let totalKembalian = totalBayar - totalBeli;
+                            alert(`Pembayaran anda berhasil, jumlah uang kembalian anda Rp${totalKembalian.toLocaleString()}`);
+                            produk[pilihanBeli].stock -= stockBeli;
+                            if (produk[pilihanBeli].stock == 0) {
+                                produk.splice(pilihanBeli, 1)
+                            }
+                            break;
+                        } else { // total pembayaran < total pembelian
+                            alert(`Pembelian gagal, jumlah uang yang dimasukkan kurang`);
+                            break;
+                        }
+                    } else {
+                        let ulangIsiStock = confirm(`Jumlah stok pembelian melebihi jumlah stok yang ada\nIngin menginput ulang jumlah pembelian untuk produk yang sama?`);
+                        if (!ulangIsiStock) {
+                            break;
+                        }
+                    }
+                }
+            }
+        } else if (menuUtama == 3) {
+            // cek stok
+            alert(`Berikut stok terupdate:\n${printList()}`);
+        } else {
+            alert(`Menu yang dipilih tidak ada`);
+        };
+
+        let logout = confirm(`Ingin kembali ke menu utama?`);
+        if (!logout) {
+            break;
+        };
+    }
+</script>

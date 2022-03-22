@@ -1,0 +1,100 @@
+<script>
+    let db = [
+        {
+            name: `Gelang`,
+            stock: 10,
+            price: 15000
+        },
+        {
+            name: `Topi`,
+            stock: 10,
+            price: 10000
+        },
+        {
+            name: `Jaket`,
+            stock: 10,
+            price: 20000
+        }
+    ];
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let list = db.map((value, index) => {
+            return `${index + 1}. ${value.name}, stok ${value.stock}, harga per item Rp${value.price}`
+        }).join(`\n`);
+
+        let menu = prompt(`Selamat datang di tokoku!
+    1. Tambah produk
+    2. Beli produk
+    3. Cek stok`);
+
+        if (menu == 1) {
+            //// tambah produk, coba pakai spread yuks!////
+            // buat pertanyaan untuk diisi user
+            let newData = [{
+                name: prompt(`Masukkan nama produk barunya`),
+                stock: Number(prompt(`Berapa jumlah stoknya?`)),
+                price: Number(prompt(`Berapa harga per itemnya?`))
+            }];
+            // pakai spread untuk gabung isi db dengan isi newData
+            db = [...db, ...newData];
+        } else if (menu == 2) {
+            //// beli produk ////
+            //// pilih urutan nomor produk yg mau dibeli ////
+            let nomor = Number(prompt(`Berikut list produk terupdate:\n${list}\n\nProduk nomor berapa yang ingin dibeli?`));
+
+            //// tunjukkin nama produk, stok, dan harga dari nomor urutan yg dipilih sekaligus tanya berapa item yg dibeli ////
+            // ambil dulu objek dari database db berdasarkan index = nomor - 1
+            let dbFilter = db[nomor - 1];
+            console.log(dbFilter); // untuk cek objek yg diambil bener ga?
+            // tampilkan nama produk, stok, harga dan tanya berapa item yg dibeli
+            let beli = Number(prompt(`${dbFilter.name}, stock ${dbFilter.stock}, harga per item Rp${dbFilter.price}\n\nMau beli berapa item?`));
+
+            //// buat protection untuk memastikan pembelian dapat dilakukan bila ...
+            // jumlah item yang dibeli <= stok yang ada ////
+            if (beli > dbFilter.stock) {
+                // tampilkan alert saat jumlah item yg dibeli > jumlah stok saat ini
+                alert(`Jumlah item yang ingin dibeli melebihi stok yang ada`);
+            } else {
+                //// program yang dijalankan saat jumlah item yg dibeli <= jumlah stok saat ini ////
+                // hitung total harga pembelian
+                let totalBeli = beli * dbFilter.price;
+
+                // tampilkan total harga pembelian sekaligus tanya jumlah uang yg akan dibayarkan
+                let bayar = Number(prompt(`Total belanja anda: Rp${totalBeli}\n\nMasukkan uang anda`));
+
+                //// apabila uang yg dibayarkan >= total harga pembelian maka pembelian berhasil, mendapatkan kembalian jika ... 
+                // ... yg dibayarkan lebih besar dr seharusnya dan jumlah stok berkurang ...
+                // ... apabila uang yg dibayarkan < total harga pembelian maka pembelian gagal ////
+                if (bayar >= totalBeli) {
+                    // membuat alert pembayaran berhasil
+                    alert(`Pembayaran anda berhasil. Anda mendapatkan kembalian Rp${bayar - totalBeli}`)
+                    //// mengupdate database stock karena barang berhasil dibeli ////
+                    // cari index barang yg dibeli dulu
+                    let indexdbFilter = db.findIndex(value => {
+                        return value.name == dbFilter.name
+                    });
+                    console.log(indexdbFilter); // untuk cek index yg diambil bener ga?
+                    // update stok di database
+                    db[indexdbFilter].stock = db[indexdbFilter].stock - beli;
+                } else {
+                    // membuat alert pembelian gagal krn uang yang dibayarkan < total harga pembelian
+                    alert(`Pembayaran gagal karena anda kurang bayar`);
+                }
+            }
+
+        } else if (menu == 3) {
+            // cek stok
+            alert(`Berikut list produk terupdate:\n${list}`);
+        } else {
+            alert(`Menu yang anda pilih tidak ada`);
+        };
+
+        konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+        if (!konfirmasi) {
+            konfirmasi = false
+        };
+    }
+</script>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehearse p03</title>
+</head>
+
+<body>
+    <div>
+        <h2>Drawing Your Shape</h2>
+        <form>
+            <select id="_shape">
+                <option value="_persegi">Persegi</option>
+                <option value="_segitiga">Segitiga</option>
+            </select>
+            <br />
+            <labe>Size of shape:</labe>
+            <br />
+            <input type="number" id="_size"></input>
+        </form>
+        <button type="button" onclick="handleGenerate()">Generate</button>
+        <br />
+        <h4 id="_hasil"></h4>
+    </div>
+</body>
+<script>
+    const handleGenerate = () => {
+        let shape = document.getElementById("_shape").value
+        let size = document.getElementById("_size").value
+        let hasilGenerate = document.getElementById("_hasil")
+
+        let hasil = ``
+        if (shape == `_persegi`) {
+            for (i = 1; i <= Number(size); i++) {
+                for (j = 1; j <= Number(size); j++) {
+                    if (i % 2 != 0) {
+                        if (j % 2 == 0) {
+                            hasil += `#`
+                        }
+                        else {
+                            hasil += `*`
+                        }
+                    }
+                    else {
+                        hasil += `#`
+                    }
+                }
+                if (i < Number(size)) {
+                    hasil += `<br />`
+                }
+            };
+        } else if (shape == `_segitiga`) {
+            for (i = 1; i <= Number(size); i++) {
+                for (j = 1; j <= Number(size); j++) {
+                    if (i > j - 1) {
+                        if (i % 2 != 0) {
+                            if (j % 2 == 0) {
+                                hasil += `#`
+                            }
+                            else {
+                                hasil += `*`
+                            }
+                        }
+                        else {
+                            hasil += `#`
+                        }
+                    } else {
+                        hasil += ``
+                    }
+
+                }
+                if (i < Number(size)) {
+                    hasil += `<br />`
+                }
+            };
+        }
+        console.log(hasil)
+        hasilGenerate.innerHTML = hasil
+    }
+</script>
+
+</html>

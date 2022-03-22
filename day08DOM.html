@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro DOM</title>
+</head>
+
+<!-- saat pakai react DOM tidak dipakai -->
+<!-- DOM itu dasarnya -->
+<!-- DOM macamnya banyak tapi paling sering dipakai getElement -->
+<!-- DOM bisa dipakai untuk styling jg tapi itu jarang banget  -->
+<!-- referensi itu banyak sekali jadi ga mungkin dihafal semua, pelajari yg diperlukan sisanya dicari saat memang dipakai -->
+
+<body>
+    <h2 id="title"></h2>
+    <!-- id harus diingat ga boleh sama kalau lagi buat elemen lain -->
+    <!-- krn html bukan bhs pemrogramman otomatis tidak bisa diidentify apakah suatu id sudah pernah dibuat atau belum (tak ada warningnya) -->
+    <form>
+        <!-- <form> untuk menunjukkan kumpulan elemen input-->
+            <input id="inName" type="text"/>
+            <button type="button" onclick="getValue()">Get Value</button>
+            <!-- begitu button diklik baru muncul di console value yg diketik -->
+    </form>
+
+
+</body>
+<script>
+    // document.getElementById("title") => merupakan DOM yang memanggil elemen melalui id title
+    
+    console.log(document.getElementById("title")) // atribut id sifatnya unik jadi getElementById yg paling sering dipake
+    // document.getElementsByClassName() berarti ambil data berdasarkan atribut class
+    // document.getElementsByName() berarti ambil data berdasarkan atribut Name
+    // document.getElementsByTagName() berarti ambil data berdasarkan tag nya (h2, h3, body)
+
+    // gimana cara isi value di id title?
+    // cara1
+    // document.getElementById("title").textContent="Hello Bos" // textContent fungsinya sama dengan innerHTML
+    document.getElementById("title").innerHTML="Hello Bos"
+    // cara2
+    let title = document.getElementById("title");
+    title.innerHTML="Hello Boskuh"
+    // dari kedua cara ini terlihat jelas klo html dan jvscript saling membutuhkan
+    // html untuk menampilkan
+    // jvscript untuk manipulasi isi
+
+    // let inName = document.getElementById("inName");
+    // console.log(inName.value);
+    // saat html dijalankan otomatis script akan dijalankan shg klo ga ada value inputnya hasilnya empty string
+
+    function getValue(){
+        let inName = document.getElementById("inName");
+        console.log(inName.value);
+    }
+
+
+</script>
+</html>

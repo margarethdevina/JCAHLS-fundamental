@@ -1,0 +1,175 @@
+<!-- DAY 09 membuat form input dan mengeluarkannya jadi tabel -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Form</title>
+    <!-- untuk styling table dsb, diapit pakai elemen style -->
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 1vw;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <!-- division / section -->
+        <!-- paling sering digunakan untuk mengelompokkan bagian tertentu dr elemen tampilan website -->
+        <!-- dikasih nama container dgn asumsi untuk cakup semua elemen -->
+        <fieldset style="width: 400px;margin: auto;">
+            <!-- fieldset: untuk membuat border -->
+            <legend>
+                <!-- legend: untuk buat caption fieldset -->Form Student
+            </legend>
+            <form id="data-form">
+                <!-- form: untuk mengumpulkan banyak elemen input -->
+                <!-- label: untuk bantu kasih label -->
+                <label>Fullname</label>
+                <input id="fullname" type="text" /><br />
+                <label>Age</label>
+                <input id="age" type="number" /><br />
+                <label>Email</label>
+                <input id="email" type="text" /><br />
+                <label>Gender</label>
+                <!-- untuk radio button dikasih 1 name biar radionya cuma bisa dipilih salah 1 aja -->
+                <input name="gender" type="radio" value="Male">Male</input>
+                <input name="gender" type="radio" value="Female">Female</input><br />
+                <label>Class Program</label>
+                <select id="program">
+                    <option value="Full-stack Web">Full-stack Web</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Digital Marketing">Digital Marketing</option>
+                    <option value="UI/UX">UI/UX</option>
+                </select>
+            </form>
+            <br />
+            <br />
+            <!-- button type "submit" untuk submit dan sekaligus refresh website  -->
+            <!-- atribut on... itu untuk menunjukkan suatu event -->
+            <button type="button" onclick="handleSubmit()">Submit</button>
+
+            <!-- ingin menampilkan info yg tersimpan di database -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Fullname</th>
+                        <th>Age</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th>Class Program</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="list-data">
+                    <!-- table body dikasih id karena nanti bagian ini yg akan diisi/dimanipulasi -->
+                    <!-- <tr>
+                        <td>1</td>
+                        <td>edo</td>
+                        <td>22</td>
+                        <td>mail.com</td>
+                        <td>male</td>
+                        <td>fs</td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+</body>
+
+<!-- ada metode lain untuk menggunakan script -->
+<script>
+    // kebutuhan demand banyakkan pakai chrome
+    // untuk developer biasanya mozilla
+
+    // supaya isi hasil submit tertampung, kita tampung di array of object yg ...
+    // ... dideclare sebelum fungsi handleSubmit supaya info yg diinput ga kereset terus
+    let dbStudent = [];
+
+    // untuk mempermudah bikin tampilan nantinya jadi buat kelas aja
+    class Student {
+        constructor(_name, _age, _email, _gender, _program) {
+            this.name = _name;
+            this.age = _age;
+            this.email = _email;
+            this.gender = _gender;
+            this.program = _program;
+        }
+    }
+
+    // saat buat fungsi di html yg terkait suatu aksi, namaVariabelFungsi dimulai dr ...
+    // ... bt handle onButton onbtn on
+    const handleSubmit = () => {
+        let form = document.getElementById("data-form");
+        // saat dilihat di mozilla terlihat si form membantu membuat array untuk para input yang jadi turunan si tag elemen form itu
+        // selain memberikan array juga menyimpan info properti
+        // console.log(form);
+        let fullname = form.elements[0].value;
+        let age = form.elements[1].value;
+        let email = form.elements[2].value;
+
+        // gender diambil secara khusus lewat properti gender bukan dari elements[array]
+        let gender = form.elements["gender"].value;
+
+        let classProgram = form.elements["program"].value;
+
+        // push setiap data yg diisi ke database
+        dbStudent.push(new Student(fullname, age, email, gender, classProgram));
+        // console.log(dbStudent);
+
+        // panggil fungsi printData() yang dibuat dibawah
+        printData();
+
+        // setiap kali submit sebaiknya kita ada fitur mereset formnya
+        form.elements[0].value = null;
+        form.elements[1].value = null;
+        form.elements[2].value = null;
+        form.elements["gender"].value = null; // radio selalu ada nilai default jd ga bs direset
+        form.elements[5].value = null;
+    }
+
+    // fungsi untuk delete isi database sekaligus update tabelnya
+    const handleDelete = (index) => {
+        dbStudent.splice(index, 1) // nanti index diisi sama ${index}
+        printData(); // untuk reset tampilan setelah delete dilakukan
+    }
+
+    // untuk membuat print nya sebaiknya dibuat fungsi terpisah supaya ...
+    // ... in case akan dipanggil di button2 lainnya
+    const printData = () => {
+        let htmlElement = dbStudent.map((value, index) => {
+            return `<tr>
+                <td>${index + 1}</td>
+                <td>${value.name}</td>
+                <td>${value.age}</td>
+                <td>${value.email}</td>
+                <td>${value.gender}</td>
+                <td>${value.program}</td>
+                <td><button type ="button" onclick ="handleDelete(${index})">Delete</button></td>
+            </tr>`
+            // <button type="button" onclick="handleSubmit()">Submit</button>
+        })
+        // dikasih .join("") biar dibelakang </tr> ga ada komanya karena ... 
+        // ... lagi mecah 1 array
+        document.getElementById("list-data").innerHTML = htmlElement.join("");
+
+    }
+
+    // framework lama based on html masi menggunakan DOM. Contoh framework: larafel, php,
+    // belum hafal semua fungsi program gpp
+    // sering baca dokumentasi!
+
+    console.log(dbStudent);
+
+</script>
+
+</html>

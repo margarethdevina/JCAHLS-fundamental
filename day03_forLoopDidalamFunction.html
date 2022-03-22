@@ -1,0 +1,50 @@
+<script>
+    let database = [`Apel`, `Semangka`];
+
+    let konfirmasi = true;
+
+    // sebaiknya function dibuat di global karena variabel database adanya di global, bukan di scope while loop
+    const printData = () => { // karena variabel yang dijalankan tidak diubah2, dah jelas variabelnya array, argumen bisa dikosongkan
+        let listData = ``;
+        for (let i=0; i < database.length; i++) {
+            listData += `${i + 1}. ${database[i]}\n`
+        }
+        return listData
+    }
+
+    while (konfirmasi) {
+        let menu = prompt(`Menu data buah:
+        1. Lihat data
+        2. Tambah data
+        3. Hapus data
+        4. Edit data
+        `)
+
+        if (menu == `1`) {
+            // fitur lihat data
+            alert(`List data: \n${printData()}`)
+        } else if (menu == `2`) {
+            // fitur tambah data
+            let newData = prompt(`Masukan data baru`);
+            database.push(newData);
+            // cara lain untuk tambah data ==> database[database.length] = newData;
+        } else if (menu == `3`) {
+            // fitur hapus data
+            let no = parseInt(prompt(`Pilih data yang akan dihapus: \n${printData()}`));
+            database.splice(no - 1, 1);
+        } else if (menu == `4`) {
+            // edit data
+            let no = parseInt(prompt(`Pilih data yang akan diedit: \n${printData()}`));
+            let newData = prompt(`Masukkan data baru:`);
+            database[no - 1] = newData;
+        } else {
+            alert(`Menu yang anda cari tidak ada`)
+        }
+
+        konfirmasi = confirm(`Mau kembali ke menu?`);
+        if (!konfirmasi) {
+            konfirmasi = false
+        }
+    }
+
+</script>

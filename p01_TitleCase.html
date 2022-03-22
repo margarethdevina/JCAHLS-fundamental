@@ -1,0 +1,85 @@
+<script>
+    /**
+     * buat aplikasi untuk men-titlecase kan sebuah kalimat
+     * misal input = naMa sAyA deVinA
+     * hasilnya = Nama Saya Devina 
+     * 
+     * //// IMPORTANT ////
+     * index selalu dimulai dari 0 jadi:
+     *  index 0 = huruf N dari Nama
+     *  index 1 = huruf a dari Nama
+     *  index 2 = huruf m dari Nama
+     *  index 3 = huruf a dari Nama
+     * 
+     * //// cara 1 ////
+     * step:
+     *  1. input kalimat
+     *  2. buat variabel penampungan berarti let namaVariabel = ``;
+     *  3. for loop statement dengan statement2 i <= input.length
+     *  4. buat if ... else if ... else statement karena
+     *      a) huruf / karakter di index 0 pasti di to.UpperCase() kan
+     *      b) setiap huruf / karakter setelah spasi pasti di to.UpperCase() kan
+     *      c) sisa huruf / karakter pasti di to.LowerCase() kan
+     *  5. buat konfirmasi untuk ulang proses dr awal
+     */
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let text = prompt(`masukkan kalimatnya`);
+
+        let titlecase = ``;
+
+        for (let i = 0; i <= text.length; i++) {
+            if (i == 0) { // pasti huruf paling awal dari kalimat dikapitalkan
+                titlecase += text.charAt(i).toUpperCase();
+            } else if (text.charAt(i - 1) == ` `) { // pasti huruf setelah spasi di dalam kalimat di kapitalkan
+                titlecase += text.charAt(i).toUpperCase();
+            } else {
+                titlecase += text.charAt(i).toLowerCase(); // sisa huruf selain paling pertama dari kalimat dan setelah spasi 
+                // dikecilkan pakai .toLowerCase()
+            }
+        }
+
+        alert(`
+    kalimat awal: ${text}
+    kalimat hasil titlecase: ${titlecase}
+    `)
+
+        konfirmasi = confirm(`mau titlecase kan kalimat lainnya?`)
+        if (!konfirmasi) {
+            konfirmasi = false;
+        }
+
+    }
+
+    //// cara 2 -- kurang efektif dan ribet ////
+
+    // let konfirmasi = true;
+
+    // while (konfirmasi) {
+
+    //     let text = prompt(`masukkan kalimatnya`); // misal naMa saya deVina
+
+    //     let titlecase = text.toLowerCase().split(` `); // titlecase = ["nama","saya","devina"]
+
+    //     for (let i = 0; i < titlecase.length; i++) { // i = 0 berarti si "nama", i = 1 berarti si "saya"
+    //         titlecase[i] = titlecase[i].charAt(0).toUpperCase() + titlecase[i].substring(1, titlecase[i].length); // task ini bakal
+    //         // ubah nama jadi Nama, saya jadi Saya, devina jadi Devina
+    //     }
+
+    //     titlecase = titlecase.join(` `);
+
+    //     alert(`
+    // kalimat awal: ${text}
+    // kalimat hasil titlecase: ${titlecase}
+    // `)
+
+    //     konfirmasi = confirm(`mau titlecase kan kalimat lainnya?`)
+    //     if (!konfirmasi) {
+    //         konfirmasi = false;
+    //     }
+    // }
+
+</script>

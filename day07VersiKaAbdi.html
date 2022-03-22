@@ -1,0 +1,130 @@
+<script>
+    class Produk {
+        constructor(_name, _stock, _harga) {
+            this.name = _name;
+            this.stock = _stock;
+            this.harga = _harga;
+        }
+
+        // untuk menunjukkan method bisa dimasukkan multiple conditions & tasks jg
+        // saat method yg mau dipakai di kelas utama & turunan hampir sama / tidak beda jauh ...
+        // ... kita bisa put method di kelas utama dengan menggunakan kondisi2 ...
+        // supaya mencegah terjadinya overwrite method
+        getInfo = (numb, expDate = null) => { // default argumen expDate = null karena ...
+            // ... saat produk yg diinput non-FnB, user tidak ditanya tgl expDate supaya ...
+            // ... informasi tidak undefined, diput default value null
+            if (expDate) { // jika expDate ada nilainya atau bukan null
+                return `${numb}. ${this.name} Stoknya = ${this.stock}, IDR. ${this.harga.toLocaleString()}, Exp. ${expDate}`
+            } else {
+                return `${numb}. ${this.name} Stoknya = ${this.stock}, IDR. ${this.harga.toLocaleString()}`
+            }
+        }
+    }
+
+    class FnB extends Produk {
+        constructor(_name, _stock, _harga, _type, _expDate) {
+            super(_name, _stock, _harga);
+            this.type = _type;
+            this.expDate = _expDate;
+        }
+    }
+    let produk = [];
+
+    /**
+     * 1. Buat Class Produk dengan properti : name, stock, harga
+     * 2. Buat class Turunan FnB yang memiliki property tambahan : type, expDate
+     * 3. Buat juga method untuk generate informasi produk sehingga bisa ditampilkan pada list produk
+    */
+
+    let printProducts = () => {
+        let list = produk.map((value, index) => {
+            return value.getInfo(index + 1, value.expDate); // value.expDate bukan null kalau ...
+            // ... produk yg diinput adalah FnB krn user diminta untuk masukkan data
+        })
+
+        return list.join("\n"); // ingat .map() akan hasilkan array krn itu butuh dipisah kebawah ...
+        // ... menggunakan join(`\n`)
+    }
+
+    while (true) {
+        let mainMenu = Number(prompt(`Selamat datang di Tokoku
+        1. Tambah Produk
+        2. Beli Produk
+        3. Cek Stock`))
+
+        // proteksi jika inputnya salah
+        if (isNaN(mainMenu)) {
+            alert("Input anda salah ❌")
+        } else {
+            if (mainMenu == 1) {
+                // fitur tambah produk
+                let category = prompt('Pilih kategori :\n1. Non-FnB\n2. FnB')
+                let name = prompt("Masukkan nama produk : ")
+                let stock = parseInt(prompt("Masukkan stock produk : "))
+                let harga = parseInt(prompt("Masukkan harga produk : "))
+                if (category == 1) {
+                    produk.push(new Produk(name, stock, harga))
+                } else if (category == 2) {
+                    let type = prompt("Masukkan type produk : ")
+                    let expDate = prompt("Masukkan ExpDate produk : ")
+                    produk.push(new FnB(name, stock, harga, type, expDate))
+                }
+
+                console.log(produk)
+
+                alert(`Produk Baru Sudah Terdaftar ✅\n${printProducts()}`)
+            } else if (mainMenu == 2) {
+                // fitur pembelian
+                let beli = parseInt(prompt(`Silahkan pilih barang :\n${printProducts()}`)) - 1;
+
+                while (true) { // buat loop klo user mw input quantity ulang krn stok < yg mw dibeli
+                    // input qty yg dibeli
+                    let qty = parseInt(prompt(`Beli ${produk[beli].name} berapa ?`));
+
+                    if (qty <= produk[beli].stock) {
+                        // lanjut ke pembayaran
+                        let totalBeli = qty * produk[beli].harga
+                        let pembayaran = parseInt(prompt(`Total belanja anda : IDR. ${totalBeli.toLocaleString()}
+                        Masukkan uang anda :
+                        `))
+                        let kembalian = pembayaran - totalBeli
+                        // proteksi uang pembayaran
+                        if (kembalian < 0) {
+                            alert("Pembelian gagal, uang anda tidak cukup ❌")
+                            break; // diberikan untuk berhentiin looping
+                            // continue untuk skip task di looping
+                        } else {
+                            alert("Pembayaran anda berhasil ✅")
+                            alert(`Kembalian anda adalah : IDR. ${kembalian.toLocaleString()}`);
+                            // mengurangi stock
+                            produk[beli].stock -= qty;
+                            // menghapus barang jika stock habis
+                            if (produk[beli].stock == 0) {
+                                produk.splice(beli, 1)
+                            }
+                            break;
+                        }
+                    } else {
+                        // notif stock barang tidak cukup
+                        let transaksi = confirm("Stock tidak cukup, mau input qty ulang ?")
+                        if (!transaksi) {
+                            break;
+                        }
+                    }
+                }
+            } else if (mainMenu == 3) {
+                // cek stock
+                alert(`Stock product : \n${printProducts()}`)
+            } else {
+                alert("Menu tidak ada ❌")
+            }
+        }
+
+
+        let logOut = confirm("Kembali ke menu utama ?")
+        if (!logOut) {
+            alert("Terima kasih sudah berkunjung 😁")
+            break
+        }
+    }
+</script>

@@ -1,0 +1,133 @@
+<script>
+    // yg diutak atik fitur tambah produk
+    /**
+     * 1. Buat class produk dengan properti: name, stock, harga
+     * 2. Buat class turunan FnB yang memiliki property tambahan: type, exp date
+     * 3. Buat juga method untuk generate informasi produk sehingga bisa ditampilkan seperti yg introduce itu
+     *      introduce = () => {
+     *          return `My name is ${this.name}, I born at ${this.birth}, my age is ${this.getAge()} years old`
+     * 
+     * type dari FnB bisa berupa minuman, makanan.
+     * tanggal dd-mm-yyyy
+     * 
+     * class structure:
+     * class classNameUtama {
+     *      constructor (_arg1,_arg2){
+     *      this.arg1 = _arg1;
+     *      this.arg2 = _arg2;
+     *      }
+     *      methodName = () => {
+     *          return xxx
+     *      }
+     * }
+     * 
+     * class classNameTurunan extends classNameUtama {
+     *      constructor (_arg1,_arg2,_arg3,_arg4){
+     *      super (_arg1,_arg2);
+     *      this.arg3 = _arg3;
+     *      this.arg4 = _arg4;
+     *      }
+     *      methodName = () => {
+     *          return xxx
+     *      }
+     * }
+     */
+
+    class Produk {
+        constructor(_name, _stock, _price) {
+            this.name = _name;
+            this.stock = _stock;
+            this.price = _price;
+        }
+        printList = () => {
+            return `Produk ${this.name}, stok ${this.stock}, harga per item Rp${this.price.toLocaleString()}`
+        }
+    }
+
+    class Fnb extends Produk {
+        constructor(_name, _stock, _price, _type, _expDate) {
+            super(_name, _stock, _price);
+            this.type = _type;
+            this.expDate = _expDate;
+        }
+        printList = () => {
+            return `Produk ${this.name}, bertipe ${this.type}, stok ${this.stock}, kadaluarsa tanggal ${this.expDate}, harga per item Rp${this.price.toLocaleString()}`
+        }
+    }
+
+    let produk = [];
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let list = produk.map((value, index) => {
+            return `${index + 1}. ${value.printList()}`
+        });
+
+        let menu = prompt(`Selamat datang di tokoku!
+    1. Tambah produk
+    2. Beli produk
+    3. Cek stok`);
+
+        if (menu == 1) {
+            // tambah produk
+            let kategoriTerpilih = prompt(`Pilih kategori produk yg ingin ditambah
+            1. Non-FnB
+            2. FnB`);
+
+            if (kategoriTerpilih == 1) {
+                produk.push(new Produk(
+                    prompt(`Masukkan nama produk`),
+                    Number(prompt(`Masukkan jumlah stok`)),
+                    Number(prompt(`Masukkan harga per item`))
+                ));
+                alert(`Produk baru berhasil terdaftar`);
+                console.log(produk);
+            } else if (kategoriTerpilih == 2) {
+                produk.push(new Fnb(
+                    prompt(`Masukkan nama produk`),
+                    Number(prompt(`Masukkan jumlah stok`)),
+                    Number(prompt(`Masukkan harga per item`)),
+                    prompt(`Masukkan tipenya Makanan / Minuman`),
+                    prompt(`Masukan tanggal kadaluarsa dgn format dd-mm-yyyy`)
+                ));
+                alert(`Produk baru berhasil terdaftar`);
+                console.log(produk);
+            } else {
+                alert(`Kategori yg dipilih tidak ada`);
+            };
+        } else if (menu == 2) {
+            // beli produk
+            let nomor = Number(prompt(`Berikut stok saat ini:\n${list.join(`\n`)}\n\nIngin membeli produk nomor brp?`));
+            let dbFilter = produk[nomor - 1];
+            let jumlahBeli = Number(prompt(`Produk yg ingin dibeli:\n${dbFilter.printList()}\n\nBerapa banyak item yg ingin dibeli?`));
+            if (jumlahBeli > dbFilter.stock) {
+                alert(`Jumlah item yg ingin dibeli melebihi jumlah stok yg ada`);
+            } else {
+                let totalBeli = jumlahBeli * dbFilter.price;
+                let totalBayar = Number(prompt(`Total yg harus dibayar: Rp${totalBeli.toLocaleString()}\n\nMasukkan uang anda`));
+                if (totalBayar >= totalBeli) {
+                    alert(`Pembelian berhasil, kembalian anda Rp${(totalBayar - totalBeli).toLocaleString()}`);
+                    let dbFilterIndex = produk.findIndex(value => {
+                        return value.name == dbFilter.name
+                    });
+                    produk[dbFilterIndex].stock = produk[dbFilterIndex].stock - jumlahBeli;
+                } else {
+                    alert(`Pembelian gagal, jumlah uang yang dibayarkan kurang`);
+                };
+            };
+        } else if (menu == 3) {
+            // cek stok
+            alert(`Berikut stok saat ini:\n${list.join(`\n`)}`);
+        } else {
+            // alert menu ga ada
+            alert(`Menu yang dipilih tidak ada`);
+        }
+
+        konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+        if (!konfirmasi) {
+            konfirmasi = false;
+        };
+    }
+</script>

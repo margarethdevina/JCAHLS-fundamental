@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing your shape</title>
+</head>
+
+<body>
+    <!-- Select persegi & segitiga -->
+    <!-- Number Size of shape -->
+    <!-- button Generate onclick hasilin looping di mana baris 1 gantian *#, baris setelah (baris 2) # semua, pattern ini berulang sd kolom akhir ... -->
+    <!-- ... sisi x sisi sesuai size of shape -->
+    <!-- refer ke for protoype loop di practice03.js -->
+    <div>
+        <h2> Drawing Your Shape</h2>
+        <select id="_shape">
+            <option value="_persegi">Persegi</option>
+            <option value="_segitiga">Segitiga</option>
+        </select>
+        <br />
+        <label>Size of shape:</label><br />
+        <input id="_size" type="number"></input>
+        <button type="button" onclick="handleGenerate()">Generate</button>
+        <h4 id="_hasil"></h4>
+    </div>
+</body>
+<script>
+    const handleGenerate = () => {
+        let shape = document.getElementById("_shape").value
+        let size = document.getElementById("_size").value
+        let hasil = document.getElementById("_hasil")
+        let simbol = ``;
+
+        if (shape == `_persegi`) {
+            for (let i = 1; i <= Number(size); i++) {
+                for (let j = 1; j <= Number(size); j++) {
+                    if (i % 2 != 0) {
+                        if (j % 2 == 0) {
+                            simbol += `#`
+                        } else {
+                            simbol += `*`
+                        }
+                    } else {
+                        simbol += `#`
+                    }
+                }
+                if (i < Number(size)) {
+                    simbol += `<br />`
+                }
+            }
+        }
+
+        if (shape == `_segitiga`) {
+            for (let i = 1; i <= Number(size); i++) {
+                for (let j = 1; j <= Number(size); j++) {
+                    if (i > j - 1) {
+                        if (i % 2 != 0) {
+                            if (j % 2 == 0) {
+                                simbol += `#`
+                            } else {
+                                simbol += `*`
+                            }
+                        } else {
+                            simbol += `#`
+                        }
+                    } else {
+                        simbol += ``
+                    }
+                }
+                if (i < Number(size)) {
+                    simbol += `<br />`
+                }
+            }
+        }
+
+        console.log(simbol)
+
+        hasil.innerHTML = simbol
+    }
+
+</script>
+
+</html>

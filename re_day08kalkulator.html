@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehearse Kalkulator</title>
+</head>
+
+<body>
+    <div id="divInputAngka">
+        <h2 id="title">Kalkulator</h2>
+        <fieldset style="width: 400px;margin: auto;">
+            <legend>Angka Pertama:</legend>
+            <form id="formAngkaPertama">
+                <input type="number" id="_angkaPertama">
+            </form>
+        </fieldset>
+        <fieldset style="width: 400px;margin: auto;">
+            <legend>Angka Kedua:</legend>
+            <form id="formAngkaKedua">
+                <input type="number" id="_angkaKedua">
+            </form>
+        </fieldset>
+    </div>
+    <div id="divHasil">
+        <fieldset style="width: 400px;margin: auto;">
+            <legend>Hasil:</legend>
+            <button type="button" onclick="getValue()">Get Value</button><br />
+            <label>Penjumlahan = </label><label id="_hasilJumlah"></label><br />
+            <label>Pengurangan = </label><label id="_hasilKurang"></label><br />
+            <label>Pembagian = </label><label id="_hasilBagi"></label><br />
+            <label>Perkalian = </label><label id="_hasilKali"></label><br />
+        </fieldset>
+    </div>
+</body>
+<script>
+
+    getValue = () => {
+        let angkaPertama = Number(document.getElementById("_angkaPertama").value);
+        let angkaKedua = Number(document.getElementById("_angkaKedua").value);
+        let hasilJumlah = document.getElementById("_hasilJumlah");
+        let hasilKurang = document.getElementById("_hasilKurang");
+        let hasilBagi = document.getElementById("_hasilBagi");
+        let hasilKali = document.getElementById("_hasilKali");
+
+        let hasil = {
+            jumlah: angkaPertama + angkaKedua,
+            kurang: angkaPertama - angkaKedua,
+            bagi: angkaPertama / angkaKedua,
+            kali: angkaPertama * angkaKedua,
+        }
+
+        hasilJumlah.innerHTML = hasil.jumlah
+        hasilKurang.innerHTML = hasil.kurang
+        hasilBagi.innerHTML = hasil.bagi
+        hasilKali.innerHTML = hasil.kali
+    }
+</script>
+
+</html>

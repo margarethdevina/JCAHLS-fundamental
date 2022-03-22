@@ -1,0 +1,120 @@
+<script>
+    /**
+     * buat aplikasi untuk: lihat, tambah, hapus, dan edit data.
+     */
+
+    let database = [
+        {
+            title: `Kimetsu no Yaiba`,
+            rating: 10,
+            viewer: 1e7
+        },
+        {
+            title: `Blue Period`,
+            rating: 8,
+            viewer: 6e6
+        }
+    ];
+
+    let konfirmasi = true;
+
+    //// DAY 04 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FUNCTION untuk loop fitur lihat data /////
+
+    // const printList = () => {
+    //     let list = ``;
+    //     for (i = 0; i < database.length; i++) {
+    //         list += `${i + 1}. ${database[i]}\n`
+    //     };
+    //     return list;
+    // };
+
+    //// DAY 04 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FUNCTION .forEach() untuk loop fitur lihat data yang bertipe array /////
+
+    // const printList = () => {
+    //     let list = ``;
+    //     database.forEach((value, index) => {
+    //         list += `${index+1}. ${value}\n`
+    //     });
+    //     return list
+    // };
+
+    //// DAY 04 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FUNCTION .map() untuk loop fitur lihat data yang bertipe array /////
+
+    // const printList = () => {
+    //     return database.map((value,index) => {
+    //         return `${index+1}. ${value}`
+    //     }).join(`\n`);
+    // };
+
+    //// DAY 04 - DATABASE DALAM BENTUK OBJECT //// ❗❗
+
+    ///// FUNCTION .map() untuk loop fitur lihat data yang bertipe array of object /////
+
+    const printList = () => {
+        return database.map((value, index) => {
+            return `${index + 1}. Anime berjudul ${value.title} memiliki rating ${value.rating} dan jumlah penonton ${value.viewer}`
+        }).join(`\n`)
+    };
+
+    while (konfirmasi) {
+
+        //// DAY 03 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+        ///// FOR LOOP STATEMENT untuk fitur lihat data /////
+
+        // let list = ``;
+        // for (i = 0; i < database.length; i++) {
+        //     list += `${i + 1}. ${database[i]}\n`
+        // };
+
+        let menu = prompt(`Pilih fitur yg diinginkan:
+    1. Lihat data
+    2. Tambah data
+    3. Hapus data
+    4. Edit data`);
+
+        if (menu == `1`) {
+            // lihat data
+            alert(`Berikut list datanya:\n${printList()}`);
+        } else if (menu == `2`) {
+            // tambah data
+            let newData =
+            {
+                title: prompt(`Masukkan title barunya`),
+                rating: Number(prompt(`Berapa ratingnya?`)),
+                viewer: Number(prompt(`Berapa jumlah penontonnya?`))
+            }
+            database.push(newData)
+        } else if (menu == `3`) {
+            // hapus data
+            let no = parseInt(prompt(`Berikut list data sebelum diapa2in ni:\n${printList()}\nMau hapus data no berapa?`));
+            database.splice(no - 1, 1);
+        } else if (menu == `4`) {
+            // edit data
+            let no = parseInt(prompt(`Berikut list data sebelum diapa2in ni:\n${printList()}\nMau edit data no berapa?`));
+            let newData =
+            {
+                title: prompt(`Masukkan title barunya`),
+                rating: Number(prompt(`Berapa ratingnya?`)),
+                viewer: Number(prompt(`Berapa jumlah penontonnya?`))
+            }
+            database.splice(no - 1, 1, newData)
+        } else {
+            // default alert saat fitur yg dipilih di luar yg ada
+            alert(`fitur yg dipilih di luar menu`);
+        }
+
+        konfirmasi = confirm(`Mau pilih fitur lain?`);
+        if (!konfirmasi) {
+            konfirmasi = false;
+        };
+
+    }
+
+</script>

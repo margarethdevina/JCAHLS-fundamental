@@ -1,0 +1,91 @@
+<script>
+    let db = [
+        {
+            name: `Jaket`,
+            stock: 10,
+            price: 35000
+        },
+        {
+            name: `Topi`,
+            stock: 10,
+            price: 15000
+        },
+        {
+            name: `Kaos`,
+            stock: 10,
+            price: 25000
+        }
+    ]
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let list = db.map((value, index) => {
+            return `${index + 1}. ${value.name}, stok ${value.stock}, harga Rp${value.price} per item`
+        }).join(`\n`);
+
+        let menu = prompt(`Selamat datang di tokoku
+    1. Tambah produk
+    2. Beli produk
+    3. Cek stok`);
+
+        if (menu == 1) {
+            // tambah produk, bisa pakai spread
+            let newData = {
+                name: prompt(`Masukkan nama produk baru`),
+                stock: Number(prompt(`Berapa jumlah stoknya?`)),
+                price: Number(prompt(`Berapa harga per itemnya?`))
+            }
+            db.push(newData)
+        } else if (menu == 2) {
+            // beli produk
+            let nomor = Number(prompt(`Berikut stok terupdate:\n${list}\n\nMau beli produk nomor berapa?`));
+            let dbFilter = db[nomor - 1]; // ambil 1 objek dr database db berdasarkan index nomor-1
+            console.log(dbFilter) // utk cek bener udah ambil 1 objek terpilih itu?
+
+            let beli = Number(prompt(`${dbFilter.name} stok ${dbFilter.stock}, harga Rp${dbFilter.price} per item\n\nMau beli berapa item?`))
+
+            if (beli > dbFilter.stock) {
+                // jumlah item yang dibeli lebih banyak dari stok tersisa
+                alert(`Jumlah stok yang dimasukkan melebihi stok yang ada`)
+            } else { // jumlah item yg dibeli kurang dr sama dgn jumlah stok yg tersisa sehingga ...
+                // ... dihitung total harga pembeliannya dan dicek jumlah pembayaran mencukupi atau tidak
+
+                let totalBeli = beli * dbFilter.price // utk tampung total harga pembelian
+
+                let uang = Number(prompt(`Total belanja anda: Rp${totalBeli}\n\nMasukkan uang anda:`))
+
+                if (uang >= totalBeli) {
+                    alert(`Pembelian berhasil, kembalian anda Rp${uang - totalBeli}`)
+
+                    // utk tahu index brp di db atas barang yg berhasil dibeli
+                    // dari index itu akan direassign jumlah stoknya supaya mencatat decrement berdasarkan jumlah variabel beli
+                    let indexdbFilter =
+                        db.findIndex(value => {
+                            return value.name == dbFilter.name
+                        })
+
+                    console.log(indexdbFilter) // untuk cek index yang di .findIndex dari database db sudah sesuai belum
+
+                    db[indexdbFilter].stock = db[indexdbFilter].stock - beli // reassign stok karena telah dibeli sebesar value variabel beli
+                } else {
+                    alert(`Jumlah uang yang dimasukkan kurang`)
+                }
+            }
+
+        } else if (menu == 3) {
+            // cek stok
+            alert(list)
+        } else {
+            alert(`Menu yang dipilih tidak ada`)
+        }
+
+        konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+        if (!konfirmasi) {
+            konfirmasi = false
+        };
+
+    };
+
+</script>

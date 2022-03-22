@@ -1,0 +1,79 @@
+<script>
+    /**
+     * buat aplikasi untuk cek dalam 1 kalimat ada huruf vokal ngga
+     * di hasil akhir akan ada alert berikut:
+     *  kalimat yang diinput hello world
+     *  huruf vokal = eo
+     *  jumlah jenis huruf vokal = 2
+     * 
+     * huruf vokal: a i u e o
+     * 
+     * //// cara 1 ////
+     * step: 
+     *  1. input kalimat misal helloo
+     *  2. buat variabel penampung
+     *  3. for loop dengan pertimbangan:
+     *      a) cek ada huruf vokal di dalam input
+     *      b) di variabel penampung sudah ada huruf vokal yang sama?
+     *          klo sudah ada jangan diinput lagi, klo belum ada berarti dimasukkan ke variabel penampung
+     *  4. buat alert untuk menunjukkan hasil yang diminta, misal:
+     *      kalimat yang diinput helloo
+     *      huruf vokal = eo
+     *      jumlah jenis huruf vokal = 2
+     *  5. buat konfirmasi untuk ulang proses
+     */
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let text = prompt(`masukkan kalimat yang ingin dicek`);
+
+        let vokal = ``; // untuk tampung huruf vokal yg ditemukan nantinya
+
+        for (let i = 0; i <= text.length; i++) {
+            // .charAt(i) di bawah bisa diganti dengan [i] karena fungsinya sama yaitu untuk ambil huruf / karakter pada index i
+            if (text.charAt(i).toLowerCase() == `a` || text.charAt(i).toLowerCase() == `i` || text.charAt(i).toLowerCase() == `u` || text.charAt(i).toLowerCase() == `e` || text.charAt(i).toLowerCase() == `o`) {
+                // program di atas untuk cek di dlm input ada huruf vokal ga
+                if (!vokal.includes(text.charAt(i).toLowerCase())) {
+                    // program di atas untuk cek di variabel vokal sudah tertampung huruf vokal yg sama atau belum
+                    // tanda ! menandakan reverse value awalnya true ==> false krn kita ingin kalau variabel vokal belum menampung
+                    // huruf vokal yg ditemukan maka program di bawah vokal += ... dijalankan
+                    vokal += text.charAt(i).toLowerCase(); // huruf vokal yg ditemukan akan ditampung jika belum pernah masuk ke variabel vokal
+                }
+            }
+        }
+
+        alert(`
+    kalimat yang diinput ${text}
+    huruf vokal = ${vokal}
+    jumlah jenis huruf vokal = ${vokal.length}
+    `)
+
+        konfirmasi = confirm(`mau cek kalimat lainnya?`);
+        if (!konfirmasi) {
+            konfirmasi = false;
+        }
+    }
+
+    //// cara 2 -- cara sendiri -- ga efektif ////
+
+    // let text = prompt(`masukkan kalimat`); // hello world
+
+    // let lowercase = text.toLowerCase().split(``); // h,e,l,l,o, ,w...
+
+    // let vowel = ``;
+
+    // for (i = 0; i <= lowercase.length; i++) {
+    //     if ((lowercase[i] === `a`) && (!vowel.includes(`a`)) || (lowercase[i] === `i`) && (!vowel.includes(`i`)) || (lowercase[i] === `u`) && (!vowel.includes(`u`)) || (lowercase[i] === `e`) && (!vowel.includes(`e`)) || (lowercase[i] === `o`) && (!vowel.includes(`o`))) {
+    //         vowel += lowercase[i];
+    //     }
+    // }
+
+    // alert(`
+    // ${text}
+    // huruf vowel = ${vowel}
+    // jumlah jenis huruf vowel = ${vowel.length}
+    // `)
+
+</script>

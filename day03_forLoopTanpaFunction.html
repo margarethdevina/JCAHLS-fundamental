@@ -1,0 +1,98 @@
+<script>
+    /**
+     * buat aplikasi untuk data barang:
+     * 1. lihat data dulu
+     * 2. tambah data dulu
+     * 3. hapus data berdasarkan nomor urut
+     * 4. edit data ==> pilih data nomor berapa, edit data lalu di reassign
+     */
+
+    ////cara 1 - efektif ////
+
+    let database = [`Apel`, `Semangka`];
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+        let menu = prompt(`Menu data buah:
+        1. Lihat data
+        2. Tambah data
+        3. Hapus data
+        4. Edit data
+        `)
+
+        let listData = ``;
+
+        for (let i = 0; i < database.length; i++) {
+            listData += `${i + 1}. ${database[i]}\n`
+        }
+
+        if (menu == `1`) {
+            // fitur lihat data
+            alert(`List data: \n${listData}`)
+        } else if (menu == `2`) {
+            // fitur tambah data
+            let newData = prompt(`Masukan data baru`);
+            database.push(newData);
+            // cara lain untuk tambah data ==> database[database.length] = newData;
+        } else if (menu == `3`) {
+            // fitur hapus data
+            let no = parseInt(prompt(`Pilih data yang akan dihapus: \n${listData}`));
+            database.splice(no - 1, 1);
+        } else if (menu == `4`) {
+            // edit data
+            let no = parseInt(prompt(`Pilih data yang akan diedit: \n${listData}`));
+            let newData = prompt(`Masukkan data baru:`);
+            database[no - 1] = newData;
+        } else {
+            alert(`Menu yang anda cari tidak ada`)
+        }
+
+        konfirmasi = confirm(`Mau kembali ke menu?`);
+        if (!konfirmasi) {
+            konfirmasi = false
+        }
+    }
+
+    //// cara 2 - cara sendiri - kurang efektif ////
+
+//     let konfirmasi = true;
+
+//     let barang = [`botol`, `hp`, `mobil`];
+
+//     while (konfirmasi) {
+
+//         let barangString = ``;
+
+//         let menu = parseInt(prompt(`silahkan atur data barang:
+// 1. tambah data
+// 2. hapus data    
+// 3. lihat data
+// 4. edit data`));
+
+//         if (menu == 3) {
+//             for (let i = 0; i < barang.length; i++) {
+//                 barangString += `${i + 1}. ${barang[i]}\n`;
+//             }
+//             alert(barangString);
+//         }
+
+//         if (menu == 1) {
+//             barang.push(prompt(`tambah barang apa?`));
+//         }
+
+//         if (menu == 2) {
+//             barang.splice(parseInt(prompt(`mau hapus barang nomor berapa?`)) - 1, 1);
+//         }
+
+//         if (menu == 4) {
+//             barang[parseInt(prompt(`mau edit barang nomor berapa?`)) - 1] = prompt(`masukkan nama barangnya`);
+//         }
+
+//         konfirmasi = confirm(`kembali ke menu utama ?`);
+//         if (!konfirmasi) {
+//             konfirmasi = false;
+//         }
+//     }
+
+</script>

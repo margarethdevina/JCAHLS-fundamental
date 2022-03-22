@@ -1,0 +1,76 @@
+<script>
+    let db = [
+        {
+            title: `Bleach`,
+            stock: 10,
+            price: 10000
+        },
+        {
+            title: `Boruto`,
+            stock: 10,
+            price: 20000
+        },
+        {
+            title: `Kimetsu no Yaiba`,
+            stock: 10,
+            price: 50000
+        }
+    ];
+
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let menu = prompt(`Selamat datang di katalog toko Animeku!
+    1. Tambah produk
+    2. Beli produk
+    3. Cek stok`);
+
+        let list = db.map((value, index) => {
+            return `${index + 1}. Anime ${value.title}, stok saat ini ${value.stock}, harga per item ${value.price}`
+        }).join(`\n`);
+
+        if (menu == 1) {
+            // tambah produk
+            let newData = [
+                {
+                    title: prompt(`Masukkan title anime yang baru`),
+                    stock: Number(prompt(`Masukkan jumlah stoknya`)),
+                    price: Number(prompt(`Masukkan harga per itemnya`))
+                }
+            ];
+            db = [...db,...newData];
+        } else if (menu == 2) {
+            // beli produk
+            let nomor = Number(prompt(`Berikut list stok terupdate:\n${list}\n\nIngin membeli produk yang mana?`));
+            let dbFilter = db[nomor - 1];
+            let jumlahBeli = Number(prompt(`Anime yang dipilih:\n${dbFilter.title}, stok ${dbFilter.stock}, harga per item ${dbFilter.price}\n\nIngin membeli berapa item?`));
+            if (jumlahBeli > dbFilter.stock) {
+                alert(`Jumlah item yang ingin dibeli melebihi jumlah stok yang ada`);
+            } else {
+                let totalBeli = jumlahBeli * dbFilter.price;
+                let jumlahBayar = Number(prompt(`Total pembelian anda Rp${totalBeli}\nMasukkan uang anda.`));
+                if (jumlahBayar >= totalBeli) {
+                    alert(`Pembayaran berhasil, jumlah kembalian anda: Rp${jumlahBayar - totalBeli}`);
+                    let dbFilterIndex = db.findIndex(value => {
+                        return value.title == dbFilter.title
+                    });
+                    db[dbFilterIndex].stock = db[dbFilterIndex].stock - jumlahBeli
+                } else {
+                    alert(`Pembayaran anda gagal, jumlah uang yang dimasukkan kurang`);
+                };
+            }
+        } else if (menu == 3) {
+            // cek stok
+            alert(`Berikut list stok terupdate:\n${list}`);
+        } else {
+            // alert saat menu salah pilih
+            alert(`Menu yang dipilih tidak ada`);
+        };
+
+        konfirmasi = confirm(`Ingin kembali ke menu utama?`);
+        if (!konfirmasi) {
+            konfirmasi = false;
+        };
+    }
+</script>

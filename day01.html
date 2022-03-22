@@ -1,0 +1,25 @@
+<!-- <script> : untuk menjalankan javascript didalam file html -->
+<script>
+    // prompt : fungsi bawaan javascript untuk menerima input dengan menggunakan pop up, tipe data selalu string
+    // let input = prompt(`Masukkan nilai:`);
+    // console.log(input);
+    // alert : untuk menampilkan data
+    // alert(input);
+
+    //aplikasi verifikasi usia untuk membuat sim
+    // aturan minimal usia membuat sim 17 tahun
+    // step by step
+    // 1. input usia ==> prompt
+    // 2. usia diperiksa ==> conditional
+    // 3. apabila usia melebihi batas minimal maka akan terverifikasi ==> output pakai alert
+    // 4. apabila usia kurang dari batas minimal maka akan gagal ==> output pakai alert
+
+    //let usia = parseInt(prompt(`Masukkan usia:`)); // ini cara paling efektif
+    // usia = parseInt(usia);
+    let usia = prompt(`Masukan usia:`)
+    if (parseInt(usia) >= 17 ){
+        alert(`Verifikasi usia berhasil`)
+    } else {
+        alert(`Verifikasi usia gagal`)
+    }
+</script>

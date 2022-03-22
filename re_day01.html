@@ -1,0 +1,22 @@
+<script>
+
+    /**
+     * buat web html untuk verifikasi usia pembuatan sim
+     * step:
+     * 1. input usia pakai prompt (ingat data yg diinput pasti jadi string!)
+     * 2. usia diperiksa menggunakan comparison operator (isian variabel usia harus diubah jadi number)
+     * 3. munculkan pop up alert
+     *      a) usia >= 17 maka verifikasi berhasil
+     *      b) usia < 17 maka verifikasi gagal
+     */
+
+    let nama = prompt(`masukkan nama anda`);
+    let usia = parseInt(prompt(`masukkan usia anda`));
+
+    if (usia >= 17) {
+        alert(`${nama}, usia anda telah terverifikasi layak membuat sim ✅`);
+    } else {
+        alert(`${nama}, usia anda belum layak untuk membuat sim ❌`);
+    }
+
+</script>

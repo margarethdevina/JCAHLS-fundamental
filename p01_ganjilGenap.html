@@ -1,0 +1,60 @@
+<script>
+    /**
+     * buat aplikasi untuk menentukan sebuah angka ganjil / genap tapi tidak pakai modulus
+     *  krn kalau pakai modulus tinggal if ... else ... statement
+     * 
+     * //// cara 1 ////
+     * step:
+     *  1. input angka sembari pastiin inputnya itu berupa angka
+     *  2. declare variabel untuk set permulaan genap atau ganjil
+     *  3. buat loop
+     *  4. buat konfirmasi
+     */
+    let konfirmasi = true;
+
+    while (konfirmasi) {
+
+        let angka = Number(prompt(`masukkan angka integer`));
+
+        let isGenap = true;
+
+        for (let i = 0; i < angka; i++) { // i < angka bukan i <= angka karena 
+            // misal angka = 2, pas i = 0 isGenap akan menjadi false melalui task yang diset up di bawah, pas i = 1 isGenap akan 
+            // menjadi true di mana nantinya kita akan pakai if ... else ... statement untuk buat alert 2 = genap karena
+            // isGenap = true
+            isGenap = !isGenap
+        }
+
+        if (isGenap) {
+            alert(`angka ${angka} adalah angka genap`);
+        } else {
+            alert(`angka ${angka} adalah angka ganjil`);
+        }
+
+        konfirmasi = confirm(`mau cek angka lainnya?`);
+        if (!konfirmasi) {
+            konfirmasi = false;
+        }
+    }
+
+    //// cara 2 ////
+
+    // let konfirmasi = true;
+
+    // while (konfirmasi) {
+    //     let angka = Number(prompt(`masukkan angka integer`));
+
+    //     if ((angka / 2).toString().includes(`.5`)) { // klo abis bagi 2 pasti ga ada koma 5 karena itu
+    //         // angka ganjil pas dibagi 2 pasti ada .5 nya atau ada sisa
+    //         alert(`angka ${angka} adalah angka ganjil`);
+    //     } else {
+    //         alert(`angka ${angka} adalah angka genap`);
+    //     }
+
+    //     konfirmasi = confirm(`mau cek angka lainnya?`);
+    //     if (!konfirmasi) {
+    //         konfirmasi = false;
+    //     }
+    // }
+
+</script>

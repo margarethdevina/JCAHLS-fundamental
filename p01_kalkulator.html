@@ -1,0 +1,98 @@
+<script>
+    /** 
+     * membuat kalkulator
+     * step:
+     *  1. alert ajakan mari berhitung
+     *  2. masukkan angkaPertama
+     *  3. masukkan angkaKedua
+     *  4. buat deteksi angkaPertama dan angkaKedua harus number kalau salah satu bukan number maka
+     *      ada alert input bukan angka 
+     *  5. munculkan alert hasil hitung angka pertama dan kedua dgn menunjukkan label berikut:
+     *      a) penjumlahan angkaPertama + angkaKedua = hasilJumlah
+     *      b) pengurangan angkaPertama - angkaKedua = hasilKurang
+     *      c) perkalian angkaPertama x angkaKedua = hasilKali
+     *      d) pembagian angkaPertama : angkaKedua = hasilBagi
+     *  6. munculkan fitur konfirmasi untuk mengulang perhitungan atau menyelesaikan aplikasi dengan
+     *      menggunakan fungsi html confirm()
+     */
+
+    /**
+     * //// IMPORTANT ////
+     * fungsi html confirm() akan menghasilkan boolean. jika ok ditekan hasilnya boolean true, jika cancel ditekan hasilnya 
+     *  boolean false.
+     * 
+     * diusahakan untuk latihan melakukan operasional tanpa membuat variabel baru krn makin banyak variabel yg dibuat makin 
+     *  banyak memori ram yg tergerus / terpakai / `tersewa` sehingga saat nantinya membuat coding yg lebih complex, 
+     *  akan membuat proses berjalan lebih lama.
+     * 
+     * fungsi Number() digunakan untuk memastikan apakah input berupa angka dan untuk mengkonvert input menjadi integer.
+     *  bila input ingin angka desimal maka perlu memakai fungsi parseFloat() nantinya.
+     * 
+     * sebenarnya kalau keywordVariabel yg digunakan saat membuat variabel adalah sama kita bisa gabungin pembuatan variabelnya
+     *  jadi let namaVariabel1 = prompt(`xxx`), namaVariabel2 = prompt(`xxx`); namun,
+     *  penggunaan strukur ini lebih sering digunakan untuk membuat namaVariabel saja tanpa ada isi jadi seperti ini:
+     *  let namaVariabel1, namaVariabel2;
+     * 
+     */
+
+    let konfirmasi = true; // membuat default value fitur konfirmasi 
+
+    alert(`mari berhitung! 😄`);
+
+    while (konfirmasi) {
+
+        let angkaPertama = Number(prompt(`Masukkan angka pertama`)); // Number() utk memastikan input berupa angka dan 
+        // mengkonversi string, akibat fungsi prompt(), menjadi integer
+
+        let angkaKedua = Number(prompt(`Masukkan angka kedua`));
+
+        if (isNaN(angkaPertama) || isNaN(angkaKedua)) {
+            alert(`input yang dimasukkan bukan angka`);
+        } else {
+            // angkaPertama = parseFloat(angkaPertama); // jika mau input bisa terima desimal
+            // angkaKedua = parseFloat(angkaKedua); // // jika mau input bisa terima desimal
+            alert(`
+    1. Penjumlahan ${angkaPertama} ➕ ${angkaKedua} = ${angkaPertama + angkaKedua}
+    2. Pengurangan ${angkaPertama} ➖ ${angkaKedua} = ${angkaPertama - angkaKedua}
+    3. Perkalian ${angkaPertama} ✖ ${angkaKedua} = ${angkaPertama * angkaKedua}
+    4. Pembagian ${angkaPertama} ➗ ${angkaKedua} = ${angkaPertama / angkaKedua}
+    `)
+        }
+        konfirmasi = confirm(`mau berhitung lagi?`);
+        if (!konfirmasi) {
+            konfirmasi = false;
+        }
+    }
+
+    //// cara 2 (bisa tapi ga perfect solution) ////
+
+    /**
+     * sebenarnya parseInt() akan dapat menghasilkan NaN juga namun saat dihadapkan dengan struktur number+huruf (i.e. 5a 10a),
+     *  parseInt() akan mengintegerkan angka2 awal yg dilihat dan menganggap input tersebut sebagai integer bukan NaN.
+     *  jadi jika dihadapkan untuk benar2 mengecek apakah semua isi input NaN atau number, lebih tepat menggunakan fungsi
+     *  Number() terlebih dahulu dan mengkonversi menjadi float memakai parseFloat() jika diperlukan.
+     */
+
+    // alert(`mari berhitung! 😄`);
+
+    // let konfirmasi;
+
+    // do {
+    //     let angkaPertama = parseInt(prompt(`masukan angka pertama`)), angkaKedua = parseInt(prompt(`masukan angka kedua`));
+
+    //     if (isNaN(angkaPertama) || isNaN(angkaKedua)) {
+    //         alert(`input yang dimasukkan bukan angka`);
+    //     } else {
+    //         alert(`
+    //         1. Penjumlahan ${angkaPertama} ➕ ${angkaKedua} = ${angkaPertama + angkaKedua}
+    //         2. Pengurangan ${angkaPertama} ➖ ${angkaKedua} = ${angkaPertama - angkaKedua}
+    //         3. Perkalian ${angkaPertama} ✖ ${angkaKedua} = ${angkaPertama * angkaKedua}
+    //         4. Pembagian ${angkaPertama} ➗ ${angkaKedua} = ${angkaPertama / angkaKedua}
+    //         `)
+    //     }
+
+    //     konfirmasi = confirm(`mau berhitung lagi?`);
+
+    // } while (konfirmasi == true) // harus == true biar pas click cancel program berhenti
+
+</script>

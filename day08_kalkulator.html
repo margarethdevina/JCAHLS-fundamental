@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator</title>
+</head>
+
+<body>
+    <h2 id="title" type="text">Kalkulator</h2>
+    <form>
+        <input id="angkaPertama" type="number" />
+        <input id="angkaKedua" type="number" />
+        <button type="button" onclick="getValue()">Get Value</button>
+    </form>
+    <h3>Hasil penjumlahan:</h3>
+        <h4 id="hasilJumlah" type="text"></h4>
+    </h3>
+    <h3>Hasil pengurangan:
+        <h4 id="hasilKurang" type="text"></h4>
+    </h3>
+    <h3>Hasil pembagian:
+        <h4 id="hasilBagi" type="text"></h4>
+    </h3>
+    <h3>Hasil perkalian:
+        <h4 id="hasilKali" type="text"></h4>
+    </h3>
+
+</body>
+
+<script>
+    function getValue() {
+        let angkaPertama = document.getElementById("angkaPertama");
+        let angkaKedua = document.getElementById("angkaKedua");
+        let hasilJumlah = document.getElementById("hasilJumlah");
+        let hasilKurang = document.getElementById("hasilKurang");
+        let hasilBagi = document.getElementById("hasilBagi");
+        let hasilKali = document.getElementById("hasilKali");
+
+        angkaPertama = Number(angkaPertama.value);
+        angkaKedua = Number(angkaKedua.value);
+
+        let hasil = {
+            jumlah: angkaPertama + angkaKedua,
+            kurang: angkaPertama - angkaKedua,
+            bagi: angkaPertama / angkaKedua,
+            kali: angkaPertama * angkaKedua
+        };
+        
+        hasilJumlah.innerHTML = hasil.jumlah
+        hasilKurang.innerHTML = hasil.kurang
+        hasilBagi.innerHTML = hasil.bagi
+        hasilKali.innerHTML = hasil.kali
+
+        console.log(angkaPertama);
+        console.log(angkaKedua);
+        console.log(hasil.kali);
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,104 @@
+<script>
+    /**
+     * buat aplikasi untuk tambah produk, beli produk, cek stok
+     * db dlm btk array of object
+     * buat cek stok dari db yg ada dulu
+     * buat fitur beli, pas beli, produk yg dipilih dimention, buat protection:
+     *      kalau jumlah yg mau dibeli > stok => gagal beli
+     *      kalau uang masuk < total yg hrs dibayar => gagal beli
+     * update db saat pembelian berhasil
+     * pas tambah produk ada notif berhasil tambah
+     * buat fitur tambahan:
+     *      tanya mau ulang masukkan kuantiti yg benar ga klo gagal beli krn stok kurang, apply yg sm untuk duit kurang
+     *      saat tambah produk berhasil, muncul updated list produk
+     *      menu utama cuma 3, pilih selain itu akan muncul notif menu yg dipilih ga ada
+     * konfirmasi mau ke menu utama atau logoff
+     */
+
+    let db = [
+        {
+            title: `Jujutsu Kaisen 0`,
+            stock: 5,
+            price: 500000
+        },
+        {
+            title: `Kimetsu no Yaiba`,
+            stock: 5,
+            price: 300000
+        },
+        {
+            title: `Selection Project`,
+            stock: 3,
+            price: 250000
+        }
+    ]
+
+    while (true) {
+
+        const printList = () => db.map((value, index) => {
+            return `${index + 1}. ${value.title}, stock ${value.stock}, harga per item Rp${value.price.toLocaleString()}`
+        }).join(`\n`)
+
+        let menuUtama = prompt(`Selamat datang di toko Anithing!
+        Pilih salah satu nomor dari menu utama berikut:
+        1. Tambah produk
+        2. Beli produk
+        3. Cek stok`);
+
+        if (menuUtama == 1) {
+            // tambah produk
+            let newData = [
+                {
+                    title: prompt(`Masukkan title anime yang baru`),
+                    stock: Number(prompt(`Masukkan jumlah stoknya`)),
+                    price: Number(prompt(`Masukkan harga per itemnya`))
+                }
+            ];
+            db = [...db,...newData];
+        } else if (menuUtama == 2) {
+            // beli produk
+            let pilihanBeli = Number(prompt(`Berikut stok terupdate:\n${printList()}\nIngin beli produk yang mana?`)) - 1;
+
+            while (true) {
+                if (pilihanBeli > db.length - 1) {
+                    alert(`Nomor produk yang dipilih tidak ada`)
+                    break;
+                } else {
+                    let stockBeli = Number(prompt(`Mau beli ${db[pilihanBeli].title} berapa banyak?`));
+
+                    if (stockBeli <= db[pilihanBeli].stock) {
+                        let totalBeli = stockBeli * db[pilihanBeli].price;
+                        let totalBayar = Number(prompt(`Total yang harus dibayar Rp${totalBeli.toLocaleString()}\nMasukkan jumlah uang yang akan anda transfer`));
+                        if (totalBayar >= totalBeli) { // total pembayaran >= total pembelian
+                            let totalKembalian = totalBayar - totalBeli;
+                            alert(`Pembayaran anda berhasil, jumlah uang kembalian anda Rp${totalKembalian.toLocaleString()}`);
+                            db[pilihanBeli].stock -= stockBeli;
+                            if (db[pilihanBeli].stock == 0) {
+                                db.splice(pilihanBeli, 1)
+                            }
+                            break;
+                        } else { // total pembayaran < total pembelian
+                            alert(`Pembelian gagal, jumlah uang yang dimasukkan kurang`);
+                            break;
+                        }
+                    } else {
+                        let ulangIsiStock = confirm(`Jumlah stok pembelian melebihi jumlah stok yang ada\nIngin menginput ulang jumlah pembelian untuk produk yang sama?`);
+                        if (!ulangIsiStock) {
+                            break;
+                        }
+                    }
+                }
+            }
+        } else if (menuUtama == 3) {
+            // cek stok
+            alert(`Berikut stok terupdate:\n${printList()}`);
+        } else {
+            alert(`Menu yang dipilih tidak ada`);
+        };
+
+        let logout = confirm(`Ingin kembali ke menu utama?`);
+        if (!logout) {
+            break;
+        };
+    }
+</script>
