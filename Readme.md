@@ -38,8 +38,9 @@
      - . berarti mindahin semua file
    - saat dipindah ke staged session, di source control akan dibilang file akan masuk ke tab staged changes dengan inisial A
    - di git status file itu akan dibilang new file: xxx dan berwarna hijau.
-4. Menyimpan perubahan di commited session
+4. Menyimpan perubahan di commited session / kedalam git
    - git commit -m "pesan_perubahan_yang_dilakukan"
    - bagusnya tulis perubahan apa yg dilakukan pada saat commit, tulis secara singkat aja tapi jangan cuma bilang "revisi".
-   - 
-5. 
+   - Modified file akan dapat inisial M
+5. Melihat history commit
+   - git log
