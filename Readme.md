@@ -44,3 +44,15 @@
    - Modified file akan dapat inisial M
 5. Melihat history commit
    - git log
+6. Menambahkan link github
+   - git remote add alias_name link_github
+     - alias_name biasanya origin tapi biasanya bisa diganti2
+     - link_github berarti link repository nya
+   - git remote -v
+     - memeriksa link github repositori yang terdaftar pada projek
+7. Konfigurasi branch utama
+   - git branch -M nama_branch
+     - nama_branch utama biasanya main atau Master
+8. Mengupload / menyimpan ke github
+   - git push -u alias_name nama_branch
+     - contoh yg kita lakukan untuk fundamental: git push -u origin main
