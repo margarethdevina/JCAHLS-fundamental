@@ -114,6 +114,23 @@ const handleSave = (index) => {
     printProduct();
 };
 
+// cara lain untuk handleSave()
+/**
+ * function handleSave() {
+ * let name = document.getElementById("new-name").value;
+ * let stock = Number(document.getElementById("new-stock").value);
+ * let price = Number(document.getElementById("new-price").value);
+ * 
+ * dbProduct[selectedIdx].name = name; // pakai selectedIdx karena selectedIdx itu global variabel jadi dah ga perlu argumen lagi bisa
+ * dbProduct[selectedIdx].stock = stock;
+ * dbProduct[selectedIdx].price = price;
+ * 
+ * selectedIdx = null;
+ * 
+ * printProduct()
+ * }
+ */
+
 // handleCancel() ❗❗
 const handleCancel = (index) => {
     selectedIdx = index;
@@ -121,9 +138,32 @@ const handleCancel = (index) => {
     printProduct();
 };
 
+let filteredIdx = null;
+
+const handleFilter = () => {
+    let form = document.getElementById("form-filter");
+    let name = form.elements[0].value;
+    let priceMin = Number(form.elements[1].value);
+    let priceMax = Number(form.elements[2].value);
+    let category = form.elements["filter-category"].value;
+
+    filteredIdx = dbProduct.findIndex((value) => {
+        return value.name == name
+    })
+
+    dbProduct = dbProduct.filter((value) => {
+        return value.name == name
+    })
+
+    filteredIdx = null;
+    
+    printProduct()
+}
+
 function printProduct() {
     let tableContent = dbProduct.map((value, index) => {
         if (selectedIdx == index) {
+            // handleSave() bisa dibuat tanpa argumen karena selectedIdx didalam fungsinya itu sudah global variabel
             return `<tr>
             <td>${value.sku}</td>
             <td><img src="${value.img}" width="50px"></td>
@@ -134,6 +174,19 @@ function printProduct() {
             <td>
             <button type="button" onclick="handleSave(${index})">Save</button>
             <button type="button" onclick="handleCancel(${index})">Cancel</button>
+            </td>
+            </tr>`
+        } else if (filteredIdx == index) {
+            return `<tr>
+            <td>${value.sku}</td>
+            <td><img src="${value.img}" width="50px"></td>
+            <td>${value.name}</td>
+            <td>${value.category}</td>
+            <td>${value.stock.toLocaleString()}</td>
+            <td>IDR${value.price.toLocaleString()}</td>
+            <td>
+            <button type="button" onclick="handleEdit(${index})">Edit</button>
+            <button type="button" onclick="handleDelete(${index})">Delete</button>
             </td>
             </tr>`
         } else {
