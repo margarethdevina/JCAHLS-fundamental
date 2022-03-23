@@ -9,6 +9,14 @@ class Product {
     }
 }
 
+class Cart extends Product {
+    constructor(_sku, _img, _name, _price, _qty) {
+        super(_sku, _img, _name, null, null, _price)
+        this.qty = _qty;
+        this.subTotal = _price * _qty;
+    }
+}
+
 let dbProduct = [
     new Product("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Oreo-Two-Cookies.png/1024px-Oreo-Two-Cookies.png",
         "Oreo", "Food", 25, 7500),
@@ -16,19 +24,23 @@ let dbProduct = [
         "Pocari", "Drinks", 50, 1000),
 ];
 
-/** contoh gambar lain untuk tes input
- * https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Delicious_meal_of_Pizza_Hut.jpg/1024px-Delicious_meal_of_Pizza_Hut.jpg
- * Pizza
- */
+let dbCart = [
+    new Cart("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Oreo-Two-Cookies.png/1024px-Oreo-Two-Cookies.png",
+        "Oreo", 7500, 3),
+];
 
 let selectedIdx = null; // untuk dipakai di fungsi handleEdit()
+
+let dataFilter = [];
+
+////////////////////////// Manajemen Product //////////////////////////////
 
 function handleSubmit() {
     // 1. mengambil data
     let form = document.getElementById("form-product");
     let img = form.elements[0].value;
     let name = form.elements[1].value;
-    let category = form.elements["category-product"].value;
+    let category = form.elements[2].value;
     let stock = Number(form.elements[3].value);
     let price = Number(form.elements[4].value);
 
@@ -90,46 +102,56 @@ function handleSubmit() {
  */
 
 // handleDelete() ❗❗
-const handleDelete = (index) => {
-    if (confirm("Yakin ingin menghapus produk ini?")) {
-        dbProduct.splice(index, 1);
-        printProduct(); // setiap ada perubahan pada database sebaiknya otomatis panggil fungsi printProduct()
-        console.log(dbProduct);
+function handleDelete(sku) {
+    console.log(sku)
+    let idx = dbProduct.findIndex((value) => value.sku == sku)
+    console.log(idx)
+    if (confirm("Yakin mau menghapus produk ini ?")) {
+        dbProduct.splice(idx, 1);
+        if (dataFilter.length > 0) {
+            dataFilter = dbProduct.filter(value => value.sku == sku);
+            printProduct(dataFilter);
+        } else {
+            printProduct();
+        }
     }
-};
+}
 
 // handleEdit() ❗❗
 const handleEdit = (index) => {
     selectedIdx = index;
-    printProduct();
+    if (dataFilter.length > 0) {
+        printProduct(dataFilter);
+    } else {
+        printProduct();
+    }
 };
 
 // handleSave() ❗❗
-const handleSave = (index) => {
-    selectedIdx = index;
-    dbProduct[index].name = document.getElementById("new-name").value;
-    dbProduct[index].stock = Number(document.getElementById("new-stock").value);
-    dbProduct[index].price = Number(document.getElementById("new-price").value);
-    selectedIdx = null
-    printProduct();
-};
+function handleSave(sku) {
+    let idx = dbProduct.findIndex(value => value.sku == sku);
+    // 1. ambil value dari form
+    let name = document.getElementById("new-name").value;
+    let stock = parseInt(document.getElementById("new-stock").value);
+    let price = parseInt(document.getElementById("new-price").value);
 
-// cara lain untuk handleSave()
-/**
- * function handleSave() {
- * let name = document.getElementById("new-name").value;
- * let stock = Number(document.getElementById("new-stock").value);
- * let price = Number(document.getElementById("new-price").value);
- * 
- * dbProduct[selectedIdx].name = name; // pakai selectedIdx karena selectedIdx itu global variabel jadi dah ga perlu argumen lagi bisa
- * dbProduct[selectedIdx].stock = stock;
- * dbProduct[selectedIdx].price = price;
- * 
- * selectedIdx = null;
- * 
- * printProduct()
- * }
- */
+    // 2. menyimpan data ke dbProduct berdasarkan selectedIdx
+    dbProduct[idx].name = name;
+    dbProduct[idx].stock = stock;
+    dbProduct[idx].price = price;
+
+    // 3. selectedIdx di reset
+    selectedIdx = null;
+
+    // 4. mencetak ulang table datanya
+    if (dataFilter.length > 0) {
+        dataFilter = dbProduct.filter(value => value.sku == sku);
+        printProduct(dataFilter);
+    } else {
+        printProduct();
+    }
+
+}
 
 // handleCancel() ❗❗
 const handleCancel = (index) => {
@@ -138,24 +160,8 @@ const handleCancel = (index) => {
     printProduct();
 };
 
-let filteredIdx = null;
-
-const handleFilter = () => {
-    let form = document.getElementById("form-filter");
-    let name = form.elements[0].value;
-    let priceMin = Number(form.elements[1].value);
-    let priceMax = Number(form.elements[2].value);
-    let category = form.elements["filter-category"].value;
-
-    dbProduct = dbProduct.filter((value) => {
-        return value.name == name
-    })
-
-    printProduct()
-}
-
-function printProduct() {
-    let tableContent = dbProduct.map((value, index) => {
+function printProduct(data = dbProduct) {
+    let tableContent = data.map((value, index) => {
         if (selectedIdx == index) {
             // handleSave() bisa dibuat tanpa argumen karena selectedIdx didalam fungsinya itu sudah global variabel
             return `<tr>
@@ -166,7 +172,7 @@ function printProduct() {
             <td><input type="number" id="new-stock" value="${value.stock}"/></td>
             <td><input type="number" id="new-price" value="${value.price}"/></td>
             <td>
-            <button type="button" onclick="handleSave(${index})">Save</button>
+            <button type="button" onclick="handleSave('${value.sku}')">Save</button>
             <button type="button" onclick="handleCancel(${index})">Cancel</button>
             </td>
             </tr>`
@@ -180,7 +186,10 @@ function printProduct() {
             <td>IDR${value.price.toLocaleString()}</td>
             <td>
             <button type="button" onclick="handleEdit(${index})">Edit</button>
-            <button type="button" onclick="handleDelete(${index})">Delete</button>
+            <button type="button" onclick="handleDelete('${value.sku}')">Delete</button>
+            </td>
+            <td>
+            <button type="button" onclick="handleBuy('${value.sku}')"> 🛒 Buy</button>
             </td>
             </tr>`
         }
@@ -193,21 +202,118 @@ function printProduct() {
 
 printProduct();
 
-// cara lainnya untuk printProduct() ❗❗ ✅
-// function printProduct() {
-//     document.getElementById("table-list").innerHTML = dbProduct.map((val, idx) => {
-//         return `<tr>
-//             <td>${val.sku}</td>
-//             <td><img src="${val.img}" width="50px"></td>
-//             <td>${val.name}</td>
-//             <td>${val.category}</td>
-//             <td>${val.stock.toLocaleString()}</td>
-//             <td>IDR${val.price.toLocaleString()}</td>
-//             <td>
-//             <button type="button">Edit</button>
-//             <button type="button">Delete</button>
-//             </td>
-//             </tr>`
-//     }).join("")
-// }
-// 
+////////////////////////// Filter Product //////////////////////////////
+
+const handleFilter = () => {
+    // 1. get value dari form fiter
+    let form = document.getElementById("form-filter");
+    let filterName = form.elements[0].value;
+    let filterMin = Number(form.elements[1].value); // parseInt akan ubah false jadi NaN yang berarti false
+    let filterMax = Number(form.elements[2].value);
+    let filterCategory = form.elements[3].value;
+
+    console.log("cek input filter:", filterName, filterMin, filterMax, filterCategory); // pastikan input bisa bekerja semua baru lanjut coding
+
+    // 2. proses filter data
+    dataFilter = dbProduct.filter((value) => {
+        if (filterName.length > 0) { // untuk proteksi return didapat kalau memang ada data di filter
+            return value.name.toLowerCase().includes(filterName.toLowerCase()) // supaya berdasarkan contain aja ga perlu sama persis tertulis oreo
+        } else if (filterMin > 0 && filterMax > 0) {
+            return value.price >= filterMin && value.price <= filterMax
+        } else if (filterCategory != "null") {
+            return value.category == filterCategory
+        }
+    })
+
+    printProduct(dataFilter)
+
+    form.elements[0].value = "";
+    form.elements[1].value = "";
+    form.elements[2].value = "";
+    form.elements["filter-category"].value = "null";
+}
+
+function handleReset() {
+    printProduct()
+}
+
+/////////////////////// Manage Transaction ///////////////////////
+
+function printKeranjang() {
+    let htmlElement = dbCart.map((value, index) => {
+        return `<tr>
+        <td>${index + 1}</td>
+        <td>${value.sku}</td>
+        <td><img src="${value.img}" width="50px"></td>
+        <td>${value.name}</td>
+        <td>IDR${value.price.toLocaleString()}</td>
+        <td>${value.qty.toLocaleString()}</td>
+        <td>${value.subTotal.toLocaleString()}</td>
+        <td>
+        <button type="button" onclick="handleDeleteCart('${value.sku}')">Delete</button>
+        </td>
+        </tr>`
+    })
+    document.getElementById("cart-list").innerHTML = htmlElement.join("")
+}
+
+printKeranjang()
+
+function handleBuy(sku) {
+
+    let index = dbProduct.findIndex(value => value.sku == sku)
+
+    let skudbCart = dbCart.map(value => value.sku)
+    console.log(skudbCart)
+
+    if (skudbCart.includes(sku)) {
+        console.log("ADA")
+        let idxSkuProductBought = dbCart.findIndex(value => value.sku == sku)
+        console.log(idxSkuProductBought)
+        if (dbCart[idxSkuProductBought].qty == dbProduct[index].stock) {
+            alert("Jumlah stok yang ingin dibeli sudah maksimal")
+        } else {
+            dbCart[idxSkuProductBought].qty += 1
+            console.log(dbCart[idxSkuProductBought].qty)
+        }
+    } else {
+        console.log("GA ADA")
+        let newCart = new Cart(
+            dbProduct[index].sku,
+            dbProduct[index].img,
+            dbProduct[index].name,
+            dbProduct[index].price,
+            1,
+            null,
+            null,
+            dbProduct[index].price)
+        console.log(newCart)
+
+        dbCart.push(newCart)
+        console.log(dbCart)
+    }
+    printKeranjang()
+}
+
+function handleDeleteCart(sku) {
+    console.log(sku)
+
+    let indexCartDeleted = dbCart.findIndex(value => value.sku == sku)
+    console.log(indexCartDeleted)
+
+    if (dbCart[indexCartDeleted].qty == 1) {
+        dbCart.splice(indexCartDeleted, 1)
+        printKeranjang()
+    } else {
+        dbCart[indexCartDeleted].qty -= 1
+        console.log(dbCart)
+
+        // in case jumlah yang di delete dipulangin ke tabel Product List ❗
+        // let indexdbProduct = dbProduct.findIndex(value => value.sku == sku)
+        // console.log(indexdbProduct)
+        // dbProduct[indexdbProduct].stock += 1
+        // printProduct()
+
+        printKeranjang()
+    }
+}

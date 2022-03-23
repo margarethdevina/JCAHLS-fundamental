@@ -32,7 +32,7 @@
                     <!-- option selected berarti secara default option itu dipilih -->
                     <option value="null" selected>Choose Category</option>
                     <option value="Food">Food</option>
-                    <option value="Drink">Drink</option>
+                    <option value="Drinks">Drinks</option>
                 </select>
                 <input type="number" id="stock-product" placeholder="Stock" />
                 <input type="number" id="price-product" placeholder="Price" />
@@ -51,10 +51,10 @@
                 <select id="filter-category">
                     <option value="null" selected>Choose Category</option>
                     <option value="Food">Food</option>
-                    <option value="Drink">Drink</option>
+                    <option value="Drinks">Drinks</option>
                 </select><br />
                 <button type="button" onclick="handleFilter()">Search</button>
-                <button type="button">Reset</button>
+                <button type="button" onclick="handleReset()">Reset</button>
             </form>
         </fieldset>
         <fieldset>
@@ -69,9 +69,30 @@
                         <th>Stock</th>
                         <th>Price</th>
                         <th>Action</th>
+                        <th>Transaction</th>
                     </tr>
                 </thead>
                 <tbody id="table-list">
+
+                </tbody>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Cart List</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>SKU</th>
+                        <th>Product</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Sub. Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-list">
 
                 </tbody>
             </table>
