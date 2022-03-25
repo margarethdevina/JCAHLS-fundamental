@@ -33,6 +33,48 @@ let selectedIdx = null; // untuk dipakai di fungsi handleEdit()
 
 let dataFilter = [];
 
+function printProduct(data = dbProduct) {
+    let tableContent = data.map((value, index) => {
+        if (selectedIdx == index) {
+            // handleSave() bisa dibuat tanpa argumen karena selectedIdx didalam fungsinya itu sudah global variabel
+            return `<tr>
+            <td>${value.sku}</td>
+            <td><img src="${value.img}" width="50px"></td>
+            <td><input type="text" id="new-name" value="${value.name}"/></td>
+            <td>${value.category}</td>
+            <td><input type="number" id="new-stock" value="${value.stock}"/></td>
+            <td><input type="number" id="new-price" value="${value.price}"/></td>
+            <td>
+            <button type="button" onclick="handleSave('${value.sku}')">Save</button>
+            <button type="button" onclick="handleCancel(${index})">Cancel</button>
+            </td>
+            </tr>`
+        } else {
+            return `<tr>
+            <td>${value.sku}</td>
+            <td><img src="${value.img}" width="50px"></td>
+            <td>${value.name}</td>
+            <td>${value.category}</td>
+            <td>${value.stock.toLocaleString()}</td>
+            <td>IDR${value.price.toLocaleString()}</td>
+            <td>
+            <button type="button" onclick="handleEdit(${index})">Edit</button>
+            <button type="button" onclick="handleDelete('${value.sku}')">Delete</button>
+            </td>
+            <td>
+            <button type="button" onclick="handleBuy('${value.sku}')"> 🛒 Buy</button>
+            </td>
+            </tr>`
+        }
+    });
+
+    document.getElementById("table-list").innerHTML = tableContent.join("");
+    console.log(tableContent);
+
+}
+
+printProduct();
+
 ////////////////////////// Manajemen Product //////////////////////////////
 
 function handleSubmit() {
@@ -160,48 +202,6 @@ const handleCancel = (index) => {
     printProduct();
 };
 
-function printProduct(data = dbProduct) {
-    let tableContent = data.map((value, index) => {
-        if (selectedIdx == index) {
-            // handleSave() bisa dibuat tanpa argumen karena selectedIdx didalam fungsinya itu sudah global variabel
-            return `<tr>
-            <td>${value.sku}</td>
-            <td><img src="${value.img}" width="50px"></td>
-            <td><input type="text" id="new-name" value="${value.name}"/></td>
-            <td>${value.category}</td>
-            <td><input type="number" id="new-stock" value="${value.stock}"/></td>
-            <td><input type="number" id="new-price" value="${value.price}"/></td>
-            <td>
-            <button type="button" onclick="handleSave('${value.sku}')">Save</button>
-            <button type="button" onclick="handleCancel(${index})">Cancel</button>
-            </td>
-            </tr>`
-        } else {
-            return `<tr>
-            <td>${value.sku}</td>
-            <td><img src="${value.img}" width="50px"></td>
-            <td>${value.name}</td>
-            <td>${value.category}</td>
-            <td>${value.stock.toLocaleString()}</td>
-            <td>IDR${value.price.toLocaleString()}</td>
-            <td>
-            <button type="button" onclick="handleEdit(${index})">Edit</button>
-            <button type="button" onclick="handleDelete('${value.sku}')">Delete</button>
-            </td>
-            <td>
-            <button type="button" onclick="handleBuy('${value.sku}')"> 🛒 Buy</button>
-            </td>
-            </tr>`
-        }
-    });
-
-    document.getElementById("table-list").innerHTML = tableContent.join("");
-    console.log(tableContent);
-
-}
-
-printProduct();
-
 ////////////////////////// Filter Product //////////////////////////////
 
 const handleFilter = () => {
@@ -234,8 +234,9 @@ const handleFilter = () => {
 }
 
 function handleReset() {
-    printProduct()
-}
+    dbFilter = [];
+    printProduct();
+};
 
 /////////////////////// Manage Transaction ///////////////////////
 

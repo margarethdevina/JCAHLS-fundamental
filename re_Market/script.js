@@ -9,6 +9,14 @@ class Product {
     }
 };
 
+class Cart extends Product {
+    constructor(_sku, _img, _name, _price, _qty) {
+        super(_sku, _img, _name, null, null, _price);
+        this.qty = _qty;
+        this.subTotal = _qty * _price;
+    }
+};
+
 let dbProduct = [
     new Product("SKU-1-123777", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/New_pizza_in_pizza_hut_of_hong_kong.jpg/1200px-New_pizza_in_pizza_hut_of_hong_kong.jpg?20200612162649",
         "Pizza", "Food", 20, 5000),
@@ -20,7 +28,14 @@ let dbFilter = [];
 
 let selectedIndex = null;
 
-console.log("isi awal db", dbProduct);
+let dbCart = [
+    new Cart("SKU-1-123777", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/New_pizza_in_pizza_hut_of_hong_kong.jpg/1200px-New_pizza_in_pizza_hut_of_hong_kong.jpg?20200612162649",
+        "Pizza", 5000, 3)
+];
+
+console.log("isi awal dbProduct", dbProduct);
+
+console.log("isi awal dbCart", dbCart);
 
 function printProduct(database = dbProduct) {
     let tableContent = database.map((value, index) => {
@@ -33,7 +48,7 @@ function printProduct(database = dbProduct) {
             <td><input id="new-stock-product" type="number" value="${value.stock}" /></td>
             <td><input id="new-price-product" type="number" value="${value.price}" /></td>
             <td>
-            <button type="button" onclick="handleSave()">Save</button>
+            <button type="button" onclick="handleSave('${value.sku}')">Save</button>
             <button type="button" onclick="handleCancel()">Cancel</button>
             </td>
             </tr>`
@@ -49,10 +64,11 @@ function printProduct(database = dbProduct) {
             <button type="button" onclick="handleEdit('${value.sku}')">Edit</button>
             <button type="button" onclick="handleDelete('${value.sku}')">Delete</button>
             </td>
+            <td><button type="button"> 🛒 Buy</button></td>
             </tr>`
         }
-    })
-    document.getElementById("table-list").innerHTML = tableContent.join("")
+    });
+    document.getElementById("table-list").innerHTML = tableContent.join("");
 };
 
 printProduct();
@@ -90,10 +106,17 @@ function handleDelete(sku) {
     console.log("index produk yg di delete", indexdbProduct);
 
     if (confirm(`Anda yakin ingin menghapus produk ini? 😉`)) {
-        dbProduct.splice(indexdbProduct, 1)
-    }
-    console.log("isi db setelah delete", dbProduct);
-    printProduct();
+        dbProduct.splice(indexdbProduct, 1);
+        console.log("isi dbProduct setelah delete", dbProduct);
+
+        if (dbFilter.length > 0) {
+            dbFilter = dbProduct.filter(value => value.sku == sku);
+            console.log("isi dbFilter setelah delete", dbFilter);
+            printProduct(dbFilter);
+        } else {
+            printProduct();
+        }
+    };
 };
 
 function handleEdit(sku) {
@@ -108,17 +131,29 @@ function handleEdit(sku) {
     }
 };
 
-function handleSave() {
-    dbProduct[selectedIndex].name = document.getElementById("new-name-product").value;
-    dbProduct[selectedIndex].stock = Number(document.getElementById("new-stock-product").value);
-    dbProduct[selectedIndex].price = Number(document.getElementById("new-price-product").value);
+function handleSave(sku) {
+    let indexdbProduct = dbProduct.findIndex(value => value.sku == sku);
+    dbProduct[indexdbProduct].name = document.getElementById("new-name-product").value;
+    dbProduct[indexdbProduct].stock = Number(document.getElementById("new-stock-product").value);
+    dbProduct[indexdbProduct].price = Number(document.getElementById("new-price-product").value);
+
     selectedIndex = null;
-    printProduct();
+    if (dbFilter.length > 0) {
+        console.log("isi dbFilter terupdate?", dbFilter);
+        dbFilter = dbProduct.filter(value => value.sku == sku);
+        printProduct(dbFilter);
+    } else {
+        printProduct();
+    }
 };
 
 function handleCancel() {
     selectedIndex = null;
-    printProduct();
+    if (dbFilter.length > 0) {
+        printProduct(dbFilter);
+    } else {
+        printProduct();
+    }
 };
 
 //////// Fitur Filter ////////
@@ -157,8 +192,28 @@ function handleSearch() {
 };
 
 function handleReset() {
+    dbFilter = [];
+    console.log("isi db filter", dbFilter);
     printProduct();
 };
 
 //////// Manajemen Cart ////////
+
+function printCart() {
+    let tableContent = dbCart.map((value, index) => {
+        return `<tr>
+        <td>${index + 1}</td>
+        <td>${value.sku}</td>
+        <td><img src="${value.img}" width="75px" /></td>
+        <td>${value.name}</td>
+        <td>IDR${value.price.toLocaleString()}</td>
+        <td>${value.qty.toLocaleString()}</td>
+        <td>IDR${value.subTotal.toLocaleString()}</td>
+        <td><button type="button">Delete</button></td>
+        </tr>`
+    });
+    document.getElementById("table-cart").innerHTML = tableContent.join("");
+};
+
+printCart()
 
