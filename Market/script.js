@@ -193,6 +193,14 @@ function handleSave(sku) {
         printProduct();
     }
 
+    let skudbCart = dbCart.map(value => value.sku);
+    let indexdbCart = dbCart.findIndex(value => value.sku == sku);
+    if (skudbCart.includes(sku)) {
+        dbCart[indexdbCart].name = dbProduct[idx].name;
+        dbCart[indexdbCart].price = dbProduct[idx].price;
+        dbCart[indexdbCart].subTotal = dbCart[indexdbCart].price * dbCart[indexdbCart].qty;
+        printKeranjang()
+    }
 }
 
 // handleCancel() ❗❗
@@ -276,6 +284,8 @@ function handleBuy(sku) {
         } else {
             dbCart[idxSkuProductBought].qty += 1
             console.log(dbCart[idxSkuProductBought].qty)
+
+            dbCart[idxSkuProductBought].subTotal = dbCart[idxSkuProductBought].price * dbCart[idxSkuProductBought].qty;
         }
     } else {
         console.log("GA ADA")
@@ -284,13 +294,10 @@ function handleBuy(sku) {
             dbProduct[index].img,
             dbProduct[index].name,
             dbProduct[index].price,
-            1,
-            null,
-            null,
-            dbProduct[index].price)
+            1);
         console.log(newCart)
 
-        dbCart.push(newCart)
+        dbCart.push(newCart);
         console.log(dbCart)
     }
     printKeranjang()
@@ -304,9 +311,9 @@ function handleDeleteCart(sku) {
 
     if (dbCart[indexCartDeleted].qty == 1) {
         dbCart.splice(indexCartDeleted, 1)
-        printKeranjang()
     } else {
         dbCart[indexCartDeleted].qty -= 1
+        dbCart[indexCartDeleted].subTotal = dbCart[indexCartDeleted].price * dbCart[indexCartDeleted].qty;
         console.log(dbCart)
 
         // in case jumlah yang di delete dipulangin ke tabel Product List ❗
@@ -315,6 +322,6 @@ function handleDeleteCart(sku) {
         // dbProduct[indexdbProduct].stock += 1
         // printProduct()
 
-        printKeranjang()
     }
+    printKeranjang()
 }

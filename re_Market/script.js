@@ -64,7 +64,7 @@ function printProduct(database = dbProduct) {
             <button type="button" onclick="handleEdit('${value.sku}')">Edit</button>
             <button type="button" onclick="handleDelete('${value.sku}')">Delete</button>
             </td>
-            <td><button type="button"> 🛒 Buy</button></td>
+            <td><button type="button" onclick="handleBuy('${value.sku}')"> 🛒 Buy</button></td>
             </tr>`
         }
     });
@@ -145,6 +145,16 @@ function handleSave(sku) {
     } else {
         printProduct();
     }
+    console.log("isi dbProduct setelah save hsl edit", dbProduct);
+
+    let skudbCart = dbCart.map(value => value.sku);
+    let indexdbCart = dbCart.findIndex(value => value.sku == sku);
+    if (skudbCart.includes(sku)) {
+        dbCart[indexdbCart].name = dbProduct[indexdbProduct].name;
+        dbCart[indexdbCart].price = dbProduct[indexdbProduct].price;
+        dbCart[indexdbCart].subTotal = dbCart[indexdbCart].price * dbCart[indexdbCart].qty;
+        printCart();
+    }
 };
 
 function handleCancel() {
@@ -209,11 +219,51 @@ function printCart() {
         <td>IDR${value.price.toLocaleString()}</td>
         <td>${value.qty.toLocaleString()}</td>
         <td>IDR${value.subTotal.toLocaleString()}</td>
-        <td><button type="button">Delete</button></td>
+        <td><button type="button" onclick="handleDeleteCart('${value.sku}')">Delete</button></td>
         </tr>`
     });
     document.getElementById("table-cart").innerHTML = tableContent.join("");
 };
 
-printCart()
+printCart();
 
+function handleBuy(sku) {
+    let skudbCart = dbCart.map(value => value.sku);
+    console.log("list sku di dbCart", skudbCart);
+
+    let indexdbProduct = dbProduct.findIndex(value => value.sku == sku);
+    console.log("index dbProduk produk yg mau dibeli", indexdbProduct);
+
+    // console.log("index dbCart produk yg mau dibeli, return -1 kalau ga ada",indexdbCart);
+    if (skudbCart.includes(sku)) {
+        let indexdbCart = dbCart.findIndex(value => value.sku == sku);
+        if (dbCart[indexdbCart].qty == dbProduct[indexdbProduct].stock) {
+            alert(`Jumlah pembelian sudah maksimum`);
+        } else {
+            dbCart[indexdbCart].qty += 1;
+            dbCart[indexdbCart].subTotal = dbCart[indexdbCart].price * dbCart[indexdbCart].qty;
+        }
+    } else {
+        dbCart.push(new Cart(
+            dbProduct[indexdbProduct].sku,
+            dbProduct[indexdbProduct].img,
+            dbProduct[indexdbProduct].name,
+            dbProduct[indexdbProduct].price,
+            1));
+    }
+    printCart();
+};
+
+function handleDeleteCart(sku) {
+    let indexdbProduct = dbProduct.findIndex(value => value.sku == sku);
+    let indexdbCart = dbCart.findIndex(value => value.sku == sku);
+
+    if (dbCart[indexdbCart].qty == 1) {
+        dbCart.splice([indexdbCart, 1]);
+    } else {
+        dbCart[indexdbCart].qty -= 1;
+        dbCart[indexdbCart].subTotal = dbCart[indexdbCart].price * dbCart[indexdbCart].qty;
+    }
+    console.log("isi dbCart setelah delete", dbCart);
+    printCart();
+}
