@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehearse Kalkulator</title>
+</head>
+
+<body>
+    <div>
+        <fieldset style="width: 400px;margin: auto;">
+            <legend>Angka Pertama:</legend>
+            <input id="angka-pertama" type="number" />
+        </fieldset>
+        <fieldset style="width: 400px;margin: auto;">
+            <legend>Angka Kedua:</legend>
+            <input id="angka-kedua" type="number" />
+        </fieldset>
+        <fieldset style="width: 400px;margin: auto;">
+            <legend>Hasil:</legend>
+            <button type="button" onclick="handleGetValue()">Get Value</button>
+            <br />
+            <label>Penjumlahan =</label><label id="penjumlahan"></label>
+            <br />
+            <label>Pengurangan =</label><label id="pengurangan"></label>
+            <br />
+            <label>Pembagian =</label><label id="pembagian"></label>
+            <br />
+            <label>Perkalian =</label><label id="perkalian"></label>
+        </fieldset>
+    </div>
+</body>
+<script>
+    function handleGetValue() {
+        let angkaPertama = parseInt(document.getElementById("angka-pertama").value);
+        console.log(angkaPertama);
+        
+        let angkaKedua = parseInt(document.getElementById("angka-kedua").value);
+        console.log(angkaKedua);
+        
+        document.getElementById("penjumlahan").innerHTML = (angkaPertama + angkaKedua).toLocaleString()
+        document.getElementById("pengurangan").innerHTML = (angkaPertama - angkaKedua).toLocaleString()
+        document.getElementById("pembagian").innerHTML = (angkaPertama * angkaKedua).toLocaleString()
+        document.getElementById("perkalian").innerHTML = (angkaPertama / angkaKedua).toLocaleString()
+    };
+</script>
+</html>

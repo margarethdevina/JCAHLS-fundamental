@@ -1,0 +1,48 @@
+<script>
+    //// DAY 03 - DATABASE DALAM BENTUK ARRAY //// ❗❗
+
+    ///// FOR LOOP STATEMENT untuk fitur lihat data /////
+
+    let database = [`Kimetsu no Yaiba`, `Blue Period`];
+
+    while (true) {
+
+        function list() {
+            return database.map((value, index) => {
+                return `${index+1}. ${value}`
+            }).join(`\n`)
+        };
+        console.log(list())
+
+        let menu = prompt(`Silahkan pilih menu:
+        1. Lihat data
+        2. Tambah data
+        3. Hapus data
+        4. Edit data`);
+
+        if (menu == 1) {
+            alert(`Berikut list terupdate:\n${list()}`);
+        } else if (menu == 2) {
+            let newData = prompt(`Masukkan title baru`);
+            database.push(newData);
+            console.log(database);
+        } else if (menu == 3) {
+            let index = parseInt(prompt(`Berikut list terupdate:\n${list()}\nIngin hapus data ke berapa?`)) - 1;
+            database.splice(index, 1);
+            console.log(database);
+        } else if (menu == 4) {
+            let index = parseInt(prompt(`Berikut list terupdate:\n${list()}\nIngin edit data ke berapa?`)) - 1;
+            let newData = prompt(`Masukkan title baru`);
+            database[index] = newData;
+            console.log(database);
+        } else {
+            alert(`Menu yg dipilih ga ada`);
+        };
+
+        let logout = confirm(`Ingin kembali ke menu utama?`);
+        if (!logout) {
+            alert(`Terimakasih sudah mampir ke sini`)
+            break;
+        };
+    };
+</script>

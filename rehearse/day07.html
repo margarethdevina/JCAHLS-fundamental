@@ -1,0 +1,96 @@
+<script>
+    class Product {
+        constructor(_name, _stock, _price) {
+            this.name = _name;
+            this.stock = _stock;
+            this.price = _price;
+        }
+        getInfo(expDate = null, numb) {
+            if (expDate) {
+                return `${numb}. Produk ${this.name}, stok ${this.stock}, kadaluarsa ${expDate}, harga per produk Rp${this.price.toLocaleString()}`
+            } else {
+                return `${numb}. Produk ${this.name}, stok ${this.stock}, harga per produk Rp${this.price.toLocaleString()}`
+            }
+        }
+    };
+
+    class Fnb extends Product {
+        constructor(_name, _stock, _price, _type, _expDate) {
+            super(_name, _stock, _price);
+            this.type = _type;
+            this.expDate = _expDate;
+        }
+    };
+
+    let dbProduct = [];
+
+    function printProduct() {
+        return dbProduct.map((value, index) => {
+            return value.getInfo(value.expDate, index + 1)
+        }).join(`\n`)
+    };
+
+    while (true) {
+
+        let menu = prompt(`Selamat datang di toko Totoro!
+        1. Tambah produk
+        2. Beli produk
+        3. Cek stok`);
+
+        if (menu == 1) {
+            // tambah produk
+            let kategori = prompt(`Pilih kategori produk yg akan diinput
+            1. Non-FnB
+            2. FnB`);
+
+            let name = prompt(`Masukkan namanya`);
+            let stock = Number(prompt(`Masukkan jumlah stoknya`));
+            let price = Number(prompt(`Masukkan harga produknya`));
+
+            if (kategori == 1) {
+                dbProduct.push(new Product(name, stock, price));
+            } else if (kategori == 2) {
+                let type = prompt(`Produk ini food/beverage?`);
+                let expDate = prompt(`Masukkan tgl kadaluarsa dgn format dd-mm-yyyy`);
+                dbProduct.push(new Fnb(name, stock, price, type, expDate));
+            } else {
+                alert(`Kategori yg dipilih tidak ada`);
+            };
+            console.log("isi dbProduct setelah ditambah",dbProduct)
+
+        } else if (menu == 2) {
+            // beli produk
+            let indexBeli = Number(prompt(`Berikut list produk terupdate:\n${printProduct()}\nIngin membeli produk nomor berapa?`)) - 1;
+            console.log("index produk yg mw dibeli", indexBeli)
+            let stockBeli = Number(prompt(`Berapa jumlah produk ${dbProduct[indexBeli].name} yg ingin dibeli?`));
+            if (stockBeli > dbProduct[indexBeli].stock) {
+                alert(`Jml produk yg ingin dibeli melebihi stok yg ada`);
+            } else {
+                let totalBeli = stockBeli * dbProduct[indexBeli].price;
+                let jumlahBayar = Number(prompt(`Total yg harus dibayar Rp${totalBeli.toLocaleString()}.\nMasukkan jumlah uang anda?`));
+                if (jumlahBayar < totalBeli) {
+                    alert(`Jumlah uang yg anda masukkan kurang`);
+                } else {
+                    let kembalian = jumlahBayar - totalBeli;
+                    alert(`Pembayaran berhasil, kembalian anda Rp${kembalian.toLocaleString()}`);
+                    dbProduct[indexBeli].stock -= stockBeli;
+                    console.log("stat updt dr produk yg berhasil dibeli", dbProduct[indexBeli])
+                    if (dbProduct[indexBeli].stock == 0) {
+                        dbProduct.splice(indexBeli, 1);
+                    }
+                }
+            };
+
+        } else if (menu == 3) {
+            alert(`Berikut list produk terupdate:\n${printProduct()}`);
+        } else {
+            alert(`Menu yg anda pilih tidak ada`);
+        };
+
+        let logout = confirm(`Ingin kembali ke menu utama`);
+        if (!logout) {
+            alert(`Terimakasih untuk kunjungannya! 😉 `);
+            break;
+        };
+    };
+</script>

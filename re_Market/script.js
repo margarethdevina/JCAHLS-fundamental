@@ -85,7 +85,7 @@ function handleSubmit() {
     let price = Number(form.elements[4].value);
     console.log("cek hasil submit", img, name, category, stock, price);
     // 2. Proteksi harus isi lengkap semua input, semua terisi berarti database diupdate
-    let sku = `SKU-${dbProduct.length + 1}-${Math.floor(Math.random() * 1000000)}`
+    let sku = `SKU-${dbProduct.length + 1}-${Math.floor(Math.random() * 1e6)}`
     if (img == "" || name == "" || category == "null" || stock == 0 || price == 0) {
         alert(`Tolong isi semua pertanyaan`)
     } else {
