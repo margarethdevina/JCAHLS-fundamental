@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis</title>
+</head>
+
+<body>
+    <center>
+        <div>
+            <h2>Quiz Purwadika</h2>
+            <fieldset>
+                <form id="form-quiz">
+                    <label><b>1. Siapakah Presiden ke-3 RI?</b></label>
+                    <br />
+                    <input name="q1" type="radio" value="true" />Habibie</input>
+                    <input name="q1" type="radio" value="false" />Gusdur</input>
+                    <input name="q1" type="radio" value="false" />Soekarno</input>
+                    <input name="q1" type="radio" value="false" />Jokowi</input>
+                    <br />
+                    <label><b>2. Berikut nama bhs pemrogramman, kecuali?</b></label>
+                    <br />
+                    <input name="q2" type="radio" value="false" />Python</input>
+                    <input name="q2" type="radio" value="true" />Inggris</input>
+                    <input name="q2" type="radio" value="false" />C++</input>
+                    <input name="q2" type="radio" value="false" />Assembly</input>
+                    <br />
+                    <label><b>3. Yg mana bukan keyword variabel javascript?</b></label>
+                    <br />
+                    <input name="q3" type="radio" value="false" />const</input>
+                    <input name="q3" type="radio" value="false" />var</input>
+                    <input name="q3" type="radio" value="false" />let</input>
+                    <input name="q3" type="radio" value="true" />function</input>
+                    <br />
+                    <label><b>4. 2 + 2?</b></label>
+                    <br />
+                    <input name="q4" type="radio" value="false" />6</input>
+                    <input name="q4" type="radio" value="false" />8</input>
+                    <input name="q4" type="radio" value="false" />2</input>
+                    <input name="q4" type="radio" value="true" />4</input>
+                </form>
+            </fieldset>
+            <button type="button" onclick="handleCorrect()">Correct</button>
+            <br />
+            <button type="button" onclick="handleReset()">Reset</button>
+            <br />
+            <label id="nilai"></label>
+        </div>
+    </center>
+</body>
+<script src="./script.js"></script>
+</html>

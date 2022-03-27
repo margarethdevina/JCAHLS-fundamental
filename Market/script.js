@@ -46,7 +46,7 @@ function printProduct(data = dbProduct) {
             <td><input type="number" id="new-price" value="${value.price}"/></td>
             <td>
             <button type="button" onclick="handleSave('${value.sku}')">Save</button>
-            <button type="button" onclick="handleCancel(${index})">Cancel</button>
+            <button type="button" onclick="handleCancel('${value.sku}')">Cancel</button>
             </td>
             </tr>`
         } else {
@@ -58,7 +58,7 @@ function printProduct(data = dbProduct) {
             <td>${value.stock.toLocaleString()}</td>
             <td>IDR${value.price.toLocaleString()}</td>
             <td>
-            <button type="button" onclick="handleEdit(${index})">Edit</button>
+            <button type="button" onclick="handleEdit('${value.sku}')">Edit</button>
             <button type="button" onclick="handleDelete('${value.sku}')">Delete</button>
             </td>
             <td>
@@ -69,7 +69,7 @@ function printProduct(data = dbProduct) {
     });
 
     document.getElementById("table-list").innerHTML = tableContent.join("");
-    console.log(tableContent);
+    // console.log(tableContent);
 
 }
 
@@ -105,8 +105,6 @@ function handleSubmit() {
         }
 
         dbProduct.push(new Product(sku(), img, name, category, stock, price))
-
-        console.log(dbProduct)
 
     }
 
@@ -160,11 +158,14 @@ function handleDelete(sku) {
 }
 
 // handleEdit() ❗❗
-const handleEdit = (index) => {
-    selectedIdx = index;
+const handleEdit = (sku) => {
     if (dataFilter.length > 0) {
+        selectedIdx = dataFilter.findIndex(value => value.sku == sku);
+        console.log("index produk yg diedit", selectedIdx);
         printProduct(dataFilter);
     } else {
+        selectedIdx = dbProduct.findIndex(value => value.sku == sku);
+        console.log("index produk yg diedit", selectedIdx);
         printProduct();
     }
 };
@@ -204,10 +205,16 @@ function handleSave(sku) {
 }
 
 // handleCancel() ❗❗
-const handleCancel = (index) => {
-    selectedIdx = index;
-    selectedIdx = null;
-    printProduct();
+const handleCancel = (sku) => {
+    selectedIdx = dataFilter.findIndex(value => value.sku == sku);
+    console.log("index saat klik cancel",selectedIdx);
+
+    if (selectedIdx == -1) {
+        printProduct();
+    } else {
+        selectedIdx = null;
+        printProduct(dataFilter);
+    }
 };
 
 ////////////////////////// Filter Product //////////////////////////////
@@ -242,7 +249,8 @@ const handleFilter = () => {
 }
 
 function handleReset() {
-    dbFilter = [];
+    dataFilter = [];
+    selectedIdx = null;
     printProduct();
 };
 

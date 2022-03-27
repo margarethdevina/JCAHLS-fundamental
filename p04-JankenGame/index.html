@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janken</title>
+</head>
+<body>
+    <center>
+        <div>
+            <h1>Janken</h1>
+            <img src="gunting.png" width="5%"/>
+            <img src="batu.png" width="5%" />
+            <img src="kertas.png" width="5%" />
+            <br />
+            <button type="button" onclick="handleGunting()">Gunting</button>
+            <button type="button" onclick="handleBatu()">Batu</button>
+            <button type="button" onclick="handleKertas()">Kertas</button>
+            <br />
+            <h3>Player</h3>
+            <label id="hasil-player"></label>
+            <br />
+            <img src="Versus-PNG-Clipart.png" width="5%"/>
+            <br />
+            <h3>PC</h3>
+            <label id="hasil-pc"></label>
+            <br />
+            <h3 id="hasil-vs"></h3>
+            <h3 id="skor-vs"></h3>
+        </div>
+    </center>
+</body>
+<script src="./script.js"></script>
+</html>

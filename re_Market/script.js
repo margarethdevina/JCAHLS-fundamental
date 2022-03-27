@@ -49,7 +49,7 @@ function printProduct(database = dbProduct) {
             <td><input id="new-price-product" type="number" value="${value.price}" /></td>
             <td>
             <button type="button" onclick="handleSave('${value.sku}')">Save</button>
-            <button type="button" onclick="handleCancel()">Cancel</button>
+            <button type="button" onclick="handleCancel('${value.sku}')">Cancel</button>
             </td>
             </tr>`
         } else {
@@ -157,12 +157,15 @@ function handleSave(sku) {
     }
 };
 
-function handleCancel() {
-    selectedIndex = null;
-    if (dbFilter.length > 0) {
-        printProduct(dbFilter);
-    } else {
+function handleCancel(sku) {
+    selectedIndex = dbFilter.findIndex(value => value.sku == sku);
+    console.log("index saat klik cancel",selectedIndex);
+
+    if (selectedIndex == -1) {
         printProduct();
+    } else {
+        selectedIndex = null;
+        printProduct(dbFilter);
     }
 };
 
@@ -204,6 +207,7 @@ function handleSearch() {
 function handleReset() {
     dbFilter = [];
     console.log("isi db filter", dbFilter);
+    selectedIndex = null;
     printProduct();
 };
 

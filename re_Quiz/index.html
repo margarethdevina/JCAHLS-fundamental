@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis</title>
+</head>
+
+<body>
+    <center>
+        <div>
+            <h1>Quiz</h1>
+            <fieldset>
+                <form id="form-quiz">
+                    <h4>1. Siapakah presiden ke-3 RI?</h4>
+                    <input name="q1" type="radio" value="true" />Habibie
+                    <input name="q1" type="radio" value="false" />Gusdur
+                    <input name="q1" type="radio" value="false" />Soekarno
+                    <input name="q1" type="radio" value="false" />Jokowi
+                    <br />
+                    <h4>2. Berikut nama bhs pemrograman, kecuali?</h4>
+                    <input name="q2" type="radio" value="false" />Python
+                    <input name="q2" type="radio" value="true" />Inggris
+                    <input name="q2" type="radio" value="false" />C++
+                    <input name="q2" type="radio" value="false" />Assembly
+                    <br />
+                    <h4>3. Yg mana bukan keyword variabel javascript?</h4>
+                    <input name="q3" type="radio" value="false" />const
+                    <input name="q3" type="radio" value="false" />var
+                    <input name="q3" type="radio" value="false" />let
+                    <input name="q3" type="radio" value="true" />function
+                    <br />
+                    <h4>4. 2 + 2?</h4>
+                    <input name="q4" type="radio" value="false" />6
+                    <input name="q4" type="radio" value="false" />8
+                    <input name="q4" type="radio" value="false" />2
+                    <input name="q4" type="radio" value="true" />4
+                </form>
+            </fieldset>
+            <button type="button" onclick="handleCorrect()">Correct</button>
+            <br />
+            <button type="button" onclick="handleReset()">Reset</button>
+            <h4 id="hasil"></h4>
+        </div>
+    </center>
+</body>
+<script>
+    let nilai = 0;
+    function handleCorrect() {
+        let form = document.getElementById("form-quiz");
+        let q1 = form.elements["q1"].value;
+        let q2 = form.elements["q2"].value;
+        let q3 = form.elements["q3"].value;
+        let q4 = form.elements["q4"].value;
+
+        if (q1 == "" || q2 == "" || q3 == "" || q4 == "") {
+            alert(`Tolong diisi semua pertanyaanya`)
+        } else {
+            let jawaban = [];
+            jawaban.push(q1, q2, q3, q4);
+
+            jawaban.forEach(value => {
+                if (value == "true") {
+                    nilai += 25;
+                } else {
+                    nilai += 0;
+                }
+            });
+            document.getElementById("hasil").innerHTML = `Nilai anda ${nilai}`
+            nilai = 0;
+        }
+    };
+
+    function handleReset() {
+        document.getElementsByName("q1").forEach(value => value.checked = false);
+        document.getElementsByName("q2").forEach(value => value.checked = false);
+        document.getElementsByName("q3").forEach(value => value.checked = false);
+        document.getElementsByName("q4").forEach(value => value.checked = false);
+        nilai = 0;
+        jawaban = [];
+        document.getElementById("hasil").innerHTML = ""
+    };
+</script>
+
+</html>
