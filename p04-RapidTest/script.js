@@ -96,7 +96,7 @@ function printList(db = dbWarga) {
 printList();
 
 function handleAntri() {
-    let antrian = Math.random().toString(36).substring(2, 8).toUpperCase();
+    let antrian = Math.random().toString(36).substring(2, 8).toUpperCase(); // kode ascii, mengenerate karakter berdasarkan angkanya
     console.log("no antrian random?", antrian)
 
     let nama = document.getElementById("new-namaWarga").value;

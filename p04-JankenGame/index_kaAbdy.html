@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janken</title>
+</head>
+
+<body>
+    <center>
+        <div>
+            <h1>Janken</h1>
+            <img src="gunting.png" width="5%" />
+            <img src="batu.png" width="5%" />
+            <img src="kertas.png" width="5%" />
+            <br />
+            <button type="button" onclick="btnPlay(0)">Gunting</button>
+            <button type="button" onclick="btnPlay(1)">Batu</button>
+            <button type="button" onclick="btnPlay(2)">Kertas</button>
+            <br />
+            <h3>Player</h3>
+            <div id="player">
+
+            </div>
+            <br />
+            <img src="Versus-PNG-Clipart.png" width="5%" />
+            <br />
+            <h3>PC</h3>
+            <div id="pc">
+
+            </div>
+            <br />
+            <h3 id="message"></h3>
+            <h3 id="score"></h3>
+        </div>
+    </center>
+</body>
+<script>
+
+    /** Pseudocode = program semu, susun program untuk merancang program
+     * deklarasi:
+     * menyimpan skor, jumlah menang, jumlah kalah, jumlah imbang
+     * lab result : {win,lose,draw};
+     * let janken : ["img_gunting","img_batu","Img_kertas"];
+     * gambar suit tidak berhubungan dengan data lain, dan sifatnya random, jadi sebaiknya img disimpan dalam bentuk array supaya bisa diacak ngambilnya pakai index arraynya.
+     * 
+     * let message : ["message win","message lose", "message draw"]
+     * 
+     * untuk mengurangi pembuatan variabel bisa kalikan jumlah kemenangan (win) dengan angka 25
+     * note:
+     * poin menang dikali 25
+     * 
+     * function btnPlay :
+     * - INPUT : pilihan player FROM Argument
+     * - generate pilihan PC FROM Math.random
+     * - IF Player == Gunting
+     *   OUTPUT :
+     *      WIN : PC == Kertas poin +25
+     *      LOSE : PC == Batu
+     * - ELSE IF Player == Batu
+     *   OUTPUT :
+     *      WIN : PC == Gunting +25
+     *      LOSE : PC == Kertas
+     * - ELSE IF Player == Kertas
+     *   OUTPUT :
+     *      WIN : PC == Batu +25
+     *      LOSE : PC == Gunting
+     */
+
+    let janken = [
+        `<img src="gunting.png" width="135px" alt="gunting"/>`,
+        `<img src="batu.png" width="135px" alt="batu"/>`,
+        `<img src="kertas.png" width="135px" alt="kertas"/>`
+    ];
+
+    let score = {
+        win: 0,
+        lose: 0,
+        draw: 0
+    };
+
+    let message = ["Player WIN ✅", "Player LOSE ❌", "Draw 💙"];
+
+    const check = (pcValue, playerWin, playerLose) => { // pcValue hasil random pc
+        if (pcValue == playerWin) {
+            score.win += 1 // idem dengan score.win++
+            return message[0];
+        } else if (pcValue == playerLose) {
+            score.lose += 1
+            return message[1];
+        } else {
+            score.draw += 1
+            return message[2];
+        }
+    };
+
+    // setTimeOut menunda jalannya program
+    // setInterval menjalankan program berulang2 dlm kurun waktu tertentu
+    // kita ingin buat supaya gambar pc berubah terus sampai saat kita pencet button
+
+    let pc = null;
+    let shuffle = setInterval(() => {
+        pc = Math.round(Math.random() * 2);
+        document.getElementById("pc").innerHTML = janken[pc];
+    }, 150)
+
+    const btnPlay = (player) => { // argumen player akan diisi array janken 0 1 2
+        // max Math.random() defaultnya 0-1 jadi ga sesuai dengan panjang index yg diperlukan. karena itu perlu dikali 2.
+        // Math.floor dipakai supaya ga melebihi batasan yg ditentukan
+        // Math.round dipilih supaya probabilita untuk mendapatkan angka acak lebih besar
+
+        let Repeat = setInterval(() => {
+            pc = Math.round(Math.random() * 2);
+            document.getElementById("pc").innerHTML = janken[pc];
+        }, 150)
+
+        document.getElementById("message").innerHTML = "";
+        document.getElementById("player").innerHTML = janken[player];
+        setTimeout(() => {
+            if (player == 0) {
+                document.getElementById("message").innerHTML = check(pc, 2, 1);
+            } else if (player == 1) {
+                document.getElementById("message").innerHTML = check(pc, 0, 2);
+            } else if (player == 2) {
+                document.getElementById("message").innerHTML = check(pc, 1, 0);
+            }
+            document.getElementById("score").innerHTML = `Result: <br /> WIN ${score.win} <br /> LOSE ${score.lose} <br /> DRAW ${score.draw} <br /> TOTAL SCORE ${score.win * 25}`;
+            clearInterval(Repeat) // untuk menstop shuffle janken pc saat button diklik
+            clearInterval(shuffle) // untuk menstop shuffle janken pc saat button diklik
+        }, 1500)
+
+    }
+</script>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quiz Tanya Jawab</title>
+    <style>
+        .border {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+
+        <h2>Quiz Purwadhika</h2>
+        <form id="soal" class="border" style="width: 500px;">
+            <h3>1. Siapakah Presiden Ke-3 Republik Indonesia ?</h3>
+            <input type="radio" name="Soal1" value="benar" id="SoalA">Prof.B.J.Habibie</input>
+            <input type="radio" name="Soal1" value="salah" id="SoalA">Abdurrahman Wahid</input>
+            <input type="radio" name="Soal1" value="salah" id="SoalA">Ir. Soekarno</input>
+            <input type="radio" name="Soal1" value="salah" id="SoalA">Joko Widodo</input>
+            <h3>2. Berikut ini adalah nama bahasa pemrogaman, kecuali........</h3>
+            <input type="radio" name="Soal2" value="salah" id="SoalB">Python</input>
+            <input type="radio" name="Soal2" value="benar" id="SoalB">Inggris</input>
+            <input type="radio" name="Soal2" value="salah" id="SoalB">C++</input>
+            <input type="radio" name="Soal2" value="salah" id="SoalB">Assembly</input>
+            <h3>3. Mana yang tidak termasuk keyword variable javascript ?</h3>
+            <input type="radio" name="Soal3" value="salah" id="Joko Widodo">const</input>
+            <input type="radio" name="Soal3" value="salah" id="Hashirama">var</input>
+            <input type="radio" name="Soal3" value="salah" id="Boruto">let</input>
+            <input type="radio" name="Soal3" value="benar" id="Naruto">function</input>
+            <h3>4. 2+2 = ... ?</h3>
+            <input type="radio" name="Soal4" value="salah" id="6">6</input>
+            <input type="radio" name="Soal4" value="salah" id="8">8</input>
+            <input type="radio" name="Soal4" value="salah" id="2">2</input>
+            <input type="radio" name="Soal4" value="benar" id="4">4</input>
+        </form>
+        <input type="button" value="Correct" onclick="cekB()"><br>
+        <input type="button" value="Reset" onclick="reset()"><br>
+        <h4 id="hasil">
+
+        </h4>
+    </center>
+    <script>
+
+        function cekB() {
+            var nilai = 0
+            var form = document.getElementById("soal");
+            console.log(form)
+            var arr = [
+                form.elements["Soal1"].value,
+                form.elements["Soal2"].value,
+                form.elements["Soal3"].value,
+                form.elements["Soal4"].value]
+            console.log(arr)
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] == "benar") {
+                    nilai += 25
+                }
+            }
+            console.log(nilai)
+            document.getElementById('hasil').innerHTML = `Nilai anda adalah ${nilai}`
+            // alert (`Nilai anda adalah ${nilai}`)
+
+            nilai = 0
+        }
+        function reset() {
+            arr = []
+            document.getElementById('hasil').innerHTML = null
+            console.log(document.getElementsByName('Soal1'))
+            document.getElementsByName('Soal1').forEach((item) => item.checked = false)
+            document.getElementsByName('Soal2').forEach((item) => item.checked = false)
+            document.getElementsByName('Soal3').forEach((item) => item.checked = false)
+            document.getElementsByName('Soal4').forEach((item) => item.checked = false)
+        }
+    </script>
+</body>
+
+</html>

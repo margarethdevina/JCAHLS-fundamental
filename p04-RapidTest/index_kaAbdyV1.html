@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid Test</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 1vw;
+        }
+
+        th {
+            min-width: 8vw;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <fieldset>
+            <legend>Warga</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-warga">
+
+                </tbody>
+                <tfooter>
+                    <td></td>
+                    <td><input id="input-nama" type="text"></td>
+                    <td><input id="input-asal" type="text"></td>
+                    <td><input id="input-tujuan" type="text"></td>
+                    <td><button type="button" onclick="handleSubmit()">Antri</button></td>
+                </tfooter>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Rapid Test</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-test">
+
+                </tbody>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Pasien Positif</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-positif">
+
+                </tbody>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Pasien Negatif</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Antrian</th>
+                        <th>Nama</th>
+                        <th>Asal</th>
+                        <th>Tujuan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-negatif">
+
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+</body>
+<script>
+    class Warga {
+        constructor(_antrian, _nama, _asal, _tujuan) {
+            this.antrian = _antrian
+            this.nama = _nama
+            this.asal = _asal
+            this.tujuan = _tujuan
+        }
+    };
+
+    let data = [
+        new Warga("A223DD", "Bayu", "Tasik", "Bogor"),
+        new Warga("A223EE", "Dimas", "Bogor", "Jakarta"),
+        new Warga("A223FF", "Dicky", "Tasik", "Bali"),
+    ];
+
+    let dataRapid = [], dataPositif = [], dataNegatif = [], dataMeninggal = [];
+
+
+    const printData = () => {
+        document.getElementById("table-warga").innerHTML = data.map((value, index) => {
+            return `
+            <tr>
+            <td>${value.antrian}</td>
+            <td>${value.nama}</td>
+            <td>${value.asal}</td>
+            <td>${value.tujuan}</td>
+            <td><button type="button" onclick="handleToRapid('${value.antrian}')">Rapid Test</button></td>
+            </tr>`
+        }).join("")
+    };
+    printData();
+
+    const handleSubmit = () => {
+        // 1. mengenerate nomor antrian
+        let char = `ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789`;
+        let code = ``;
+        for (i = 0; i <= 5; i++) {
+            code += char.charAt(Math.floor(Math.random() * char.length))
+        }
+        console.log(code)
+        // 2. menyimpan data
+        let nama = document.getElementById("input-nama").value;
+        let asal = document.getElementById("input-asal").value;
+        let tujuan = document.getElementById("input-tujuan").value;
+
+        // let Tes
+        // console.log(Tes) => akan menghasilkan undefined
+        // kalau let Tes = null, null = objek sebenarnya dengan nilai kosong
+        console.log(nama, asal, tujuan) // kalau ada kosong = empty string yg falsy
+        console.log(Boolean(nama), Boolean(asal), Boolean(tujuan)) // untuk cek truthy/falsy
+        if (nama && asal && tujuan) {
+            data.push(new Warga(code, nama, asal, tujuan));
+        } else {
+            alert("isi semua form")
+        }
+        // 3. merefresh ulang tampilan
+        printData()
+        document.getElementById("input-nama").value = "";
+        document.getElementById("input-asal").value = "";
+        document.getElementById("input-tujuan").value = "";
+    };
+
+    const printRapid = () => {
+        document.getElementById("table-test").innerHTML = dataRapid.map((value, index) => {
+            return `
+            <tr>
+            <td>${value.antrian}</td>
+            <td>${value.nama}</td>
+            <td>${value.asal}</td>
+            <td>${value.tujuan}</td>
+            <td>
+            <select id="result-${value.antrian}" onchange="handleCheck('${value.antrian}')">
+                <option value="null" selected>Pilih</option>
+                <option value="positif" >Positif</option>
+                <option value="negatif" >Negatif</option>
+            </select>
+            </td>
+            </tr>`
+        }).join("")
+    };
+    // atribut id itu unik supaya bisa ke id select yg tepat, setiap id di elemen select perlu dikombinasi dengan alamat index / antrian
+
+    const handleToRapid = (kode_antrian) => {
+        let dataIdx = data.findIndex(val => val.antrian == kode_antrian);
+
+        dataRapid.push(data[dataIdx]);
+        data.splice(dataIdx, 1);
+
+        printData();
+        printRapid();
+    };
+
+    const handleCheck = (kode_antrian) => {
+        let rapidIdx = dataRapid.findIndex(val => val.antrian == kode_antrian);
+
+        let resultCheck = document.getElementById(`result-${kode_antrian}`).value;
+
+        if (resultCheck == "positif"){
+            dataPositif.push(dataRapid[rapidIdx]);
+        } else {
+            dataNegatif.push(dataRapid[rapidIdx]);
+        };
+
+        dataRapid.splice(rapidIdx, 1);
+
+        printRapid();
+        printPositif();
+    };
+
+    const printPositif = () => {
+        document.getElementById("table-positif").innerHTML = dataPositif.map((value, index) => {
+            return `
+            <tr>
+            <td>${value.antrian}</td>
+            <td>${value.nama}</td>
+            <td>${value.asal}</td>
+            <td>${value.tujuan}</td>
+            <td>
+            <select id="report-${value.antrian}" onchange="handlePositif('${value.antrian}')">
+                <option value="null" selected>Pilih</option>
+                <option value="sembuh" >Sembuh</option>
+                <option value="meninggal" >Meninggal</option>
+            </select>
+            </td>
+            </tr>`
+        }).join("")
+    };
+</script>
+
+</html>

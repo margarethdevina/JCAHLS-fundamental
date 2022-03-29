@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>re_Janken</title>
+</head>
+
+<body>
+    <center>
+        <div>
+            <h1>Janken</h1>
+            <img src="./gunting.png" width="5%" />
+            <img src="./batu.png" width="5%" />
+            <img src="./kertas.png" width="5%" />
+            <br />
+            <button type="button" onclick="handleGunting()">Gunting</button>
+            <button type="button" onclick="handleBatu()">Batu</button>
+            <button type="button" onclick="handleKertas()">Kertas</button>
+            <br />
+            <h2>Player</h2>
+            <label id="hasil-player"></label>
+            <br />
+            <img src="./Versus-PNG-Clipart.png" width="5%" />
+            <h2>PC</h2>
+            <label id="hasil-pc"></label>
+            <h2 id="hasil-suit"></h2>
+            <h2 id="skor-suit"></h2>
+        </div>
+    </center>
+</body>
+<script>
+    let skor = 0;
+    let hasilImbang = 0;
+    let hasilKalah = 0;
+    let hasilMenang = 0;
+    let simbolPc = 0;
+
+    function printSkor() {
+        return document.getElementById("skor-suit").innerHTML = `Hasil menang ${hasilMenang}, hasil imbang ${hasilImbang}, hasil kalah ${hasilKalah}. Total skor ${skor}`;
+    };
+
+    function printHasilSuit(status) {
+        if (status == "Menang") {
+            return document.getElementById("hasil-suit").innerHTML = "Player menang";
+        } else if (status == "Kalah") {
+            return document.getElementById("hasil-suit").innerHTML = "Player kalah";
+        } else if (status == "Imbang") {
+            return document.getElementById("hasil-suit").innerHTML = "Hasil imbang";
+        }
+    };
+
+    let imgGunting = `<img src="./gunting.png" width="5%" />`;
+    let imgBatu = `<img src="./batu.png" width="5%" />`
+    let imgKertas = `<img src="./kertas.png" width="5%" />`
+
+    function randNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    };
+
+    let testTemp = ["gunting", "batu", "kertas"];
+    const testHasil = () => testTemp[Math.floor(Math.random() * testTemp.length)];
+    console.log(testHasil());
+
+    function hasil_pc() {
+        
+        return document.getElementById("hasil-pc").innerHTML = `<img src="./${testHasil()}.png" width="5%" />`
+    }
+
+    function hasilPc() {
+        if (randNumber(1, 3) == 1) {
+            simbolPc = 1;
+            document.getElementById("hasil-pc").innerHTML = imgGunting
+        } else if (randNumber(1, 3) == 2) {
+            simbolPc = 2;
+            document.getElementById("hasil-pc").innerHTML = imgBatu
+        } else if (randNumber(1, 3) == 3) {
+            simbolPc = 3;
+            document.getElementById("hasil-pc").innerHTML = imgKertas
+        }
+        return simbolPc
+    };
+
+    function handleGunting() {
+        document.getElementById("hasil-player").innerHTML = imgGunting
+        hasilPc()
+        if (hasilPc() == 1) {
+            hasilImbang += 1;
+            printHasilSuit("Imbang");
+        } else if (hasilPc() == 2) {
+            hasilKalah += 1;
+            printHasilSuit("Kalah");
+        } else if (hasilPc() == 3) {
+            hasilMenang += 1;
+            skor += 25;
+            printHasilSuit("Menang");
+        }
+        printSkor();
+    };
+
+    function handleBatu() {
+        document.getElementById("hasil-player").innerHTML = imgBatu
+        hasilPc()
+        if (hasilPc() == 1) {
+            hasilMenang += 1;
+            skor += 25;
+            printHasilSuit("Menang");
+        } else if (hasilPc() == 2) {
+            hasilImbang += 1;
+            printHasilSuit("Imbang");
+        } else if (hasilPc() == 3) {
+            hasilKalah += 1;
+            printHasilSuit("Kalah");
+        }
+        printSkor();
+    };
+
+    function handleKertas() {
+        document.getElementById("hasil-player").innerHTML = imgKertas
+        hasilPc()
+        if (hasilPc() == 1) {
+            hasilKalah += 1;
+            printHasilSuit("Kalah");
+        } else if (hasilPc() == 2) {
+            hasilMenang += 1;
+            skor += 25;
+            printHasilSuit("Menang");
+        } else if (hasilPc() == 3) {
+            hasilImbang += 1;
+            printHasilSuit("Imbang");
+        }
+        printSkor();
+    };
+</script>
+
+</html>

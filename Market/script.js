@@ -33,6 +33,8 @@ let selectedIdx = null; // untuk dipakai di fungsi handleEdit()
 
 let dataFilter = [];
 
+let totalBayar = 0;
+
 function printProduct(data = dbProduct) {
     let tableContent = data.map((value, index) => {
         if (selectedIdx == index) {
@@ -207,7 +209,7 @@ function handleSave(sku) {
 // handleCancel() ❗❗
 const handleCancel = (sku) => {
     selectedIdx = dataFilter.findIndex(value => value.sku == sku);
-    console.log("index saat klik cancel",selectedIdx);
+    console.log("index saat klik cancel", selectedIdx);
 
     if (selectedIdx == -1) {
         printProduct();
@@ -271,7 +273,11 @@ function printKeranjang() {
         </td>
         </tr>`
     })
-    document.getElementById("cart-list").innerHTML = htmlElement.join("")
+
+    totalBayar = 0
+    dbCart.map(value => totalBayar += value.subTotal);
+    document.getElementById("cart-list").innerHTML = htmlElement.join("");
+    document.getElementById("totalBayar").innerHTML = totalBayar.toLocaleString();
 }
 
 printKeranjang()
@@ -287,13 +293,16 @@ function handleBuy(sku) {
         console.log("ADA")
         let idxSkuProductBought = dbCart.findIndex(value => value.sku == sku)
         console.log(idxSkuProductBought)
-        if (dbCart[idxSkuProductBought].qty == dbProduct[index].stock) {
+        if (dbProduct[index].stock == 0) { //dbCart[idxSkuProductBought].qty
             alert("Jumlah stok yang ingin dibeli sudah maksimal")
+            // dbProduct.splice(index, 1) // ini hard delete
         } else {
             dbCart[idxSkuProductBought].qty += 1
             console.log(dbCart[idxSkuProductBought].qty)
 
             dbCart[idxSkuProductBought].subTotal = dbCart[idxSkuProductBought].price * dbCart[idxSkuProductBought].qty;
+
+            dbProduct[index].stock -= 1
         }
     } else {
         console.log("GA ADA")
@@ -307,8 +316,11 @@ function handleBuy(sku) {
 
         dbCart.push(newCart);
         console.log(dbCart)
+
+        dbProduct[index].stock -= 1
     }
     printKeranjang()
+    printProduct()
 }
 
 function handleDeleteCart(sku) {
@@ -317,19 +329,63 @@ function handleDeleteCart(sku) {
     let indexCartDeleted = dbCart.findIndex(value => value.sku == sku)
     console.log(indexCartDeleted)
 
+    let indexdbProduct = dbProduct.findIndex(value => value.sku == sku)
+
     if (dbCart[indexCartDeleted].qty == 1) {
         dbCart.splice(indexCartDeleted, 1)
+        dbProduct[indexdbProduct].stock += 1
     } else {
         dbCart[indexCartDeleted].qty -= 1
         dbCart[indexCartDeleted].subTotal = dbCart[indexCartDeleted].price * dbCart[indexCartDeleted].qty;
         console.log(dbCart)
 
-        // in case jumlah yang di delete dipulangin ke tabel Product List ❗
-        // let indexdbProduct = dbProduct.findIndex(value => value.sku == sku)
-        // console.log(indexdbProduct)
-        // dbProduct[indexdbProduct].stock += 1
-        // printProduct()
-
+        dbProduct[indexdbProduct].stock += 1
     }
     printKeranjang()
+    printProduct()
+};
+
+/**
+ * buat fieldset berisi total pembayaran, uang masuk, button check out
+ * saat pembelian berhasil:
+ * - ada kembalian jika uang masuk > total pembayaran
+ * - isi cart list hilang
+ * 
+ * By default semua subtotal produk di cart di sum dan masuk ke totalPembayaran
+ * 
+ * function handleCheckOut(){
+ * INPUT uangMasuk
+ * if uangMasuk >= totalBayar
+ *  dbCart = []
+ *  printCart()
+ *  totalKembalian = uangMasuk - totalBayar
+ * else
+ *  alert uangMasuk kurang
+ *  INPUT direset
+ * }
+ */
+
+let totalPembayaran = 0
+
+function handleCheckOut() {
+    console.log(totalBayar);
+    
+    totalPembayaran += totalBayar;
+    console.log(totalPembayaran);
+
+    let uangMasuk = parseInt(document.getElementById("uangMasuk").value);
+    console.log(uangMasuk);
+    
+    let totalKembalian = uangMasuk - totalBayar;
+    
+    if (uangMasuk < totalBayar) {
+        alert(`Uang yang dimasukkan kurang`);
+        document.getElementById("uangMasuk").value = "";
+        totalPembayaran = 0
+    } else if (uangMasuk >= totalBayar) {
+        dbCart = [];
+        document.getElementById("totalKembalian").innerHTML = totalKembalian.toLocaleString();
+        printKeranjang()
+        document.getElementById("totalBayar").innerHTML = totalPembayaran.toLocaleString();
+    }
 }

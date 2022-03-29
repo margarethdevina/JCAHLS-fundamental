@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>re_RapidTest</title>
+    <style>
+        table,
+        th,
+        tr,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 1vw;
+        }
+
+        td {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset style="width:400px;">
+        <legend>Warga</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Antrian</th>
+                    <th>Nama</th>
+                    <th>Asal</th>
+                    <th>Tujuan</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tb_warga">
+
+            </tbody>
+            <tfoot>
+                <td></td>
+                <td><input id="new_nama" type="text" /></td>
+                <td><input id="new_asal" type="text" /></td>
+                <td><input id="new_tujuan" type="text" /></td>
+                <td><button type="button" onclick="handleSubmit()">Antri</button></td>
+            </tfoot>
+        </table>
+    </fieldset>
+    <fieldset style="width:400px;">
+        <legend>Rapid Test</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Antrian</th>
+                    <th>Nama</th>
+                    <th>Asal</th>
+                    <th>Tujuan</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tb_rapid">
+
+            </tbody>
+        </table>
+    </fieldset>
+    <fieldset style="width:400px;">
+        <legend>Pasien Positif</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Antrian</th>
+                    <th>Nama</th>
+                    <th>Asal</th>
+                    <th>Tujuan</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tb_positif">
+
+            </tbody>
+        </table>
+    </fieldset>
+    <fieldset style="width:400px;">
+        <legend>Pasien Negatif</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Antrian</th>
+                    <th>Nama</th>
+                    <th>Asal</th>
+                    <th>Tujuan</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tb_negatif">
+
+            </tbody>
+        </table>
+    </fieldset>
+</body>
+<script>
+    class Warga {
+        constructor(_antrian, _nama, _asal, _tujuan) {
+            this.antrian = _antrian;
+            this.nama = _nama;
+            this.asal = _asal;
+            this.tujuan = _tujuan;
+            this.status = "Listed";
+        }
+        makeAction = () => {
+            if (this.status == "Listed") {
+                return `<button type="button" onclick="handleToRapid('${this.antrian}','Rapid')">Rapid Test</button>`
+            } else if (this.status == "Rapid") {
+                return `<select id="result-${this.antrian}" onchange="handleToRapid('${this.antrian}')">
+                    <option value="null" selected>Pilih</option>
+                    <option value="Positif">Positif</option>
+                    <option value="Negatif">Negatif</option>
+                </select>`
+            } else if (this.status == "Positif") {
+                return `<select id="report-${this.antrian}" onchange="handleToRapid('${this.antrian}')">
+                    <option value="null" selected>Pilih</option>
+                    <option value="Listed">Sembuh</option>
+                    <option value="Dead">Meninggal</option>
+                </select>`
+            } else if (this.status == "Negatif") {
+                return `<button type="button" onclick="handleToRapid('${this.antrian}','Listed')">To Warga</button>`
+            }
+        }
+    };
+
+    let data = [
+        new Warga("A273BN", "Tanjiro", "Tokyo", "Jakarta"),
+        new Warga("IOA901", "Naofumi", "Jakarta", "Bogor"),
+        new Warga("IOA405", "Gon", "Bogor", "Bandung")
+    ];
+
+    const printData = (status, print) => {
+        let dataFilter = data.filter(val => val.status == status)
+        document.getElementById(print).innerHTML = dataFilter.map((value, index) => {
+            return `<tr>
+                <td>${value.antrian}</td>
+                <td>${value.nama}</td>
+                <td>${value.asal}</td>
+                <td>${value.tujuan}</td>
+                <td>${value.makeAction()}</td>
+                </tr>`
+        }).join("")
+    };
+    printData("Listed", "tb_warga")
+
+    const handleSubmit = () => {
+        let char = `ABCDEFGHIJKLMNOPQRSTUVWXYZ12345679`
+        let code = ``;
+        for (i = 0; i <= 5; i++) {
+            code += char.charAt(Math.floor(Math.random() * char.length));
+        };
+        // console.log("cek random code",code)
+
+        let nama = document.getElementById("new_nama").value;
+        let asal = document.getElementById("new_asal").value;
+        let tujuan = document.getElementById("new_tujuan").value;
+        // console.log("cek hasil antri",nama,asal,tujuan)
+
+        if (nama && asal && tujuan) {
+            data.push(new Warga(code, nama, asal, tujuan));
+            // console.log("cek data berhasil di push",data)
+        } else {
+            alert(`Tolong isi form dengan lengkap`);
+        };
+
+        printData("Listed", "tb_warga");
+
+        document.getElementById("new_nama").value = "";
+        document.getElementById("new_asal").value = "";
+        document.getElementById("new_tujuan").value = "";
+    };
+
+    const handleToRapid = (kode_antrian, status) => {
+        let dataIdx = data.findIndex(val => val.antrian == kode_antrian);
+        // console.log("idx saat klik/select",dataIdx)
+
+        if(status){
+            data[dataIdx].status = status;
+            // console.log("data setelah listed => rapid",data)
+        } else {
+            let result = document.getElementById(`result-${kode_antrian}`);
+            let report = document.getElementById(`report-${kode_antrian}`);
+            if (result||report){
+                if (result){
+                    data[dataIdx].status = result.value;
+                } else if (report) {
+                    data[dataIdx].status = report.value;
+                }
+            }
+        };
+        printData("Listed","tb_warga");
+        printData("Rapid","tb_rapid");
+        printData("Positif","tb_positif");
+        printData("Negatif","tb_negatif");
+        console.log("status data yg diklik =>",data[dataIdx].nama,data[dataIdx].status);
+    };
+</script>
+
+</html>
