@@ -56,6 +56,9 @@ let namaproduk = "Air Jordan"; // ✅
 
 // let bantu banget untuk mencegah redeclare dalam 1 scope yg sama toh itu bisa di reassign
 
+// primitive data type = string, number, boolean, null, undefined
+// non-primitive data type = object, array, function
+
 //////////////// DATA TYPE ///////////////
 // 1️⃣ string : untuk karakter atau huruf, ditandai dengan quotes
 let namaToko = "Gladius 'A' \"Toko\" Olahraga"; // double quotes, bisa untuk nambahin single quote ditengah nama toko, perlu \ untuk tambah double quote dan enter (\n)
@@ -176,7 +179,7 @@ console.log(isNaN("12")); // output false karena meskipun string didalamnya beru
 let benar = true;
 let salah = false;
 
-// comparison operator : >, <, >=, <=, ==, ===, !=
+// comparison operator : >, <, >=, <=, ==, ===, != negacy
 let angka_A = 20;
 let angka_B = 15;
 console.log("Comparison : ", angka_A > angka_B); // output harusnya true
@@ -217,6 +220,7 @@ console.log(Boolean(`false`)); // hasilnya true
 console.log(Boolean(` `)); // hasilnya true
 console.log(Boolean(`ABCD`)); // hasilnya true
 console.log(Boolean(true)); // hasilnya true
+// empty array, empty object, empty argument in function
 
 // Falsy ❌ : nilai pada tipe data yang bernilai false
 console.log(Boolean(false)); // hasilnya false

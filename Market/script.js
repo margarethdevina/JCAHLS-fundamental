@@ -259,7 +259,9 @@ function handleReset() {
 /////////////////////// Manage Transaction ///////////////////////
 
 function printKeranjang() {
+    totalBayar = 0
     let htmlElement = dbCart.map((value, index) => {
+        totalBayar += value.subTotal
         return `<tr>
         <td>${index + 1}</td>
         <td>${value.sku}</td>
@@ -274,8 +276,6 @@ function printKeranjang() {
         </tr>`
     })
 
-    totalBayar = 0
-    dbCart.map(value => totalBayar += value.subTotal);
     document.getElementById("cart-list").innerHTML = htmlElement.join("");
     document.getElementById("totalBayar").innerHTML = totalBayar.toLocaleString();
 }
@@ -365,27 +365,81 @@ function handleDeleteCart(sku) {
  * }
  */
 
-let totalPembayaran = 0
+dbUser = [];
+let dateNow = new Date();
 
-function handleCheckOut() {
-    console.log(totalBayar);
-    
-    totalPembayaran += totalBayar;
-    console.log(totalPembayaran);
-
-    let uangMasuk = parseInt(document.getElementById("uangMasuk").value);
-    console.log(uangMasuk);
-    
-    let totalKembalian = uangMasuk - totalBayar;
-    
-    if (uangMasuk < totalBayar) {
-        alert(`Uang yang dimasukkan kurang`);
-        document.getElementById("uangMasuk").value = "";
-        totalPembayaran = 0
-    } else if (uangMasuk >= totalBayar) {
-        dbCart = [];
-        document.getElementById("totalKembalian").innerHTML = totalKembalian.toLocaleString();
-        printKeranjang()
-        document.getElementById("totalBayar").innerHTML = totalPembayaran.toLocaleString();
+class User {
+    constructor(_username, _totalBayar, _totalKembalian) {
+        this.username = _username
+        this.date = `${dateNow.getFullYear()}-${dateNow.getMonth()+1}-${dateNow.getDate()}`
+        this.totalBayar = _totalBayar
+        this.totalKembalian = _totalKembalian
+        this.detail = [...dbCart]
     }
+};
+
+let omset = 0;
+function handleCheckOut() {
+    omset = 0;
+    let username = document.getElementById("username").value;
+    let uangMasuk = parseInt(document.getElementById("uangMasuk").value);
+    let totalKembalian = uangMasuk - totalBayar;
+
+    if (username) {
+        if (uangMasuk < totalBayar) {
+            document.getElementById("uangMasuk").value = "";
+            document.getElementById("message").innerHTML = "Maaf, uang anda kurang ⚠️"
+        } else if (uangMasuk >= totalBayar) {
+            dbUser.push(new User(username, totalBayar, totalKembalian))
+            console.table(dbUser)
+            dbCart = [];
+            printKeranjang()
+            document.getElementById("uangMasuk").value = "";
+            document.getElementById("message").innerHTML = `Kembalian anda ${totalKembalian.toLocaleString()}<br/>Terima kasih ✅`;
+        }
+    } else {
+        alert(`Checkout gagal, masukkan username terlebih dahulu`)
+    }
+    document.getElementById("username").value = "";
+
+    document.getElementById("ledger").innerHTML = dbUser.map((value,index)=>{
+        omset += value.totalBayar
+        return `<tr>
+        <td>${index+1}</td>
+        <td>${value.username}</td>
+        <td>${value.date}</td>
+        <td>${value.totalBayar.toLocaleString()}</td>
+        <td>${value.totalKembalian.toLocaleString()}</td>
+        </tr>`
+    }).join("")
+    
+    document.getElementById("omset").innerHTML = omset.toLocaleString();
 }
+
+function handleReject(){
+
+    dbCart.map((value)=>{
+        let sku = value.sku
+        let indexdbProduct = dbProduct.findIndex(val => val.sku == sku)
+
+        dbProduct[indexdbProduct].stock += value.qty
+    })
+    
+    dbCart = [];
+    printKeranjang()
+    printProduct()
+}
+
+
+/**
+ * 1. simpan data transaksi setiap user berhasil bayar (buat baru)
+ * 2. data yang harus disimpan: username (string), date (string,pakai objek date) => ambil tahun, bulan, tanggal,
+ *      totalPayment (number), change (number), detail (array of object yg ada di cart)
+ * 3. reset ulang username, fieldset checkout
+ * 4. data berhasil disimpan apa ngga dicek di console.log
+ * 
+ * fieldset tabel nama date totalbayar change
+ * total omset
+ * 
+ * tambah tombol reject untuk pulangin semua cart ke product list
+ */

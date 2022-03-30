@@ -12,10 +12,10 @@ class Product {
 let selectedIdx = null;
 
 let dbProduct = [
-    new Product("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Oreo-Two-Cookies.png/1024px-Oreo-Two-Cookies.png",
-        "Oreo", "Food", 25, 7500),
-    new Product("SKU-2-123456", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Pocari_sweat_500ml.jpg/800px-Pocari_sweat_500ml.jpg",
-        "Pocari", "Drinks", 50, 1000),
+    new Product("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Ramen_and_Chahan_003.jpg/640px-Ramen_and_Chahan_003.jpg",
+        "Ramen", "Food", 5, 75000),
+    new Product("SKU-2-123456", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Irish_Cream_Cold_Brew_at_Starbucks_-_2021-11-15_-_Sarah_Stierch.jpg/640px-Irish_Cream_Cold_Brew_at_Starbucks_-_2021-11-15_-_Sarah_Stierch.jpg",
+        "Starbucks", "Drinks", 5, 55000),
 ];
 
 
@@ -38,7 +38,7 @@ function handleSubmit() {
 
     form.elements[0].value = "";
     form.elements[1].value = "";
-    form.elements["category-product"].value = null;
+    form.elements["category-product"].value = "null";
     form.elements[3].value = "";
     form.elements[4].value = "";
 };
@@ -60,7 +60,7 @@ function printProduct() {
         if (selectedIdx == index) {
             return `<tr>
             <td>${value.sku}</td>
-            <td><img src="${value.img}" width="50px" /></td>
+            <td><img src="${value.img}" width="120px" /></td>
             <td><input type="text" id="new-name-product" value="${value.name}" /></td>
             <td>${value.category}</td>
             <td><input type="number" id="new-stock-product" value="${value.stock}" /></td>
@@ -72,7 +72,7 @@ function printProduct() {
         } else {
             return `<tr>
             <td>${value.sku}</td>
-            <td><img src="${value.img}" width="50px" /></td>
+            <td><img src="${value.img}" width="120px" /></td>
             <td>${value.name}</td>
             <td>${value.category}</td>
             <td>${value.stock.toLocaleString()}</td>
