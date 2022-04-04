@@ -14,6 +14,7 @@ class Cart extends Product {
         super(_sku, _img, _name, null, null, _price)
         this.qty = _qty;
         this.subTotal = _price * _qty;
+        this.selected = false;
     }
 }
 
@@ -25,8 +26,8 @@ let dbProduct = [
 ];
 
 let dbCart = [
-    new Cart("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Oreo-Two-Cookies.png/1024px-Oreo-Two-Cookies.png",
-        "Oreo", 7500, 3),
+    // new Cart("SKU-1-126374", "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Oreo-Two-Cookies.png/1024px-Oreo-Two-Cookies.png",
+    //     "Oreo", 7500, 3),
 ];
 
 let selectedIdx = null; // untuk dipakai di fungsi handleEdit()
@@ -34,6 +35,10 @@ let selectedIdx = null; // untuk dipakai di fungsi handleEdit()
 let dataFilter = [];
 
 let totalBayar = 0;
+
+let totalAfterDisc = 0;
+
+let discount = 0;
 
 function printProduct(data = dbProduct) {
     let tableContent = data.map((value, index) => {
@@ -259,16 +264,18 @@ function handleReset() {
 /////////////////////// Manage Transaction ///////////////////////
 
 function printKeranjang() {
-    totalBayar = 0
     let htmlElement = dbCart.map((value, index) => {
-        totalBayar += value.subTotal
         return `<tr>
-        <td>${index + 1}</td>
+        <td><input id="select-${value.sku}" ${value.selected ? "checked" : ""} type="checkbox" onclick="handleSelect('${value.sku}')"/></td>
         <td>${value.sku}</td>
         <td><img src="${value.img}" width="50px"></td>
         <td>${value.name}</td>
         <td>IDR${value.price.toLocaleString()}</td>
-        <td>${value.qty.toLocaleString()}</td>
+        <td>
+        <button type="button" onclick="handleDecrement('${value.sku}')">➖</button>
+        ${value.qty.toLocaleString()}
+        <button type="button" onclick="handleIncrement('${value.sku}')">➕</button>
+        </td>
         <td>${value.subTotal.toLocaleString()}</td>
         <td>
         <button type="button" onclick="handleDeleteCart('${value.sku}')">Delete</button>
@@ -276,46 +283,45 @@ function printKeranjang() {
         </tr>`
     })
 
+    totalPayment();
     document.getElementById("cart-list").innerHTML = htmlElement.join("");
-    document.getElementById("totalBayar").innerHTML = totalBayar.toLocaleString();
-}
-
-printKeranjang()
+};
+printKeranjang();
 
 function handleBuy(sku) {
 
     let index = dbProduct.findIndex(value => value.sku == sku)
 
     let skudbCart = dbCart.map(value => value.sku)
-    console.log(skudbCart)
+    // console.log(skudbCart)
 
     if (skudbCart.includes(sku)) {
-        console.log("ADA")
+        // console.log("ADA")
         let idxSkuProductBought = dbCart.findIndex(value => value.sku == sku)
-        console.log(idxSkuProductBought)
+        // console.log(idxSkuProductBought)
         if (dbProduct[index].stock == 0) { //dbCart[idxSkuProductBought].qty
             alert("Jumlah stok yang ingin dibeli sudah maksimal")
             // dbProduct.splice(index, 1) // ini hard delete
         } else {
             dbCart[idxSkuProductBought].qty += 1
-            console.log(dbCart[idxSkuProductBought].qty)
+            // console.log(dbCart[idxSkuProductBought].qty)
 
             dbCart[idxSkuProductBought].subTotal = dbCart[idxSkuProductBought].price * dbCart[idxSkuProductBought].qty;
 
             dbProduct[index].stock -= 1
         }
     } else {
-        console.log("GA ADA")
+        // console.log("GA ADA")
         let newCart = new Cart(
             dbProduct[index].sku,
             dbProduct[index].img,
             dbProduct[index].name,
             dbProduct[index].price,
             1);
-        console.log(newCart)
+        // console.log(newCart)
 
         dbCart.push(newCart);
-        console.log(dbCart)
+        // console.log(dbCart)
 
         dbProduct[index].stock -= 1
     }
@@ -323,11 +329,30 @@ function handleBuy(sku) {
     printProduct()
 }
 
-function handleDeleteCart(sku) {
-    console.log(sku)
+function handleIncrement(sku) {
+    let index = dbProduct.findIndex(value => value.sku == sku)
 
+    let skudbCart = dbCart.map(value => value.sku)
+
+    if (skudbCart.includes(sku)) {
+        let idxSkuProductBought = dbCart.findIndex(value => value.sku == sku)
+        if (dbProduct[index].stock == 0) {
+            alert("Jumlah stok yang ingin dibeli sudah maksimal")
+            // dbProduct.splice(index, 1) // ini hard delete
+        } else {
+            dbCart[idxSkuProductBought].qty += 1
+
+            dbCart[idxSkuProductBought].subTotal = dbCart[idxSkuProductBought].price * dbCart[idxSkuProductBought].qty;
+
+            dbProduct[index].stock -= 1
+        }
+    }
+    printKeranjang()
+    printProduct()
+};
+
+function handleDecrement(sku) {
     let indexCartDeleted = dbCart.findIndex(value => value.sku == sku)
-    console.log(indexCartDeleted)
 
     let indexdbProduct = dbProduct.findIndex(value => value.sku == sku)
 
@@ -337,7 +362,6 @@ function handleDeleteCart(sku) {
     } else {
         dbCart[indexCartDeleted].qty -= 1
         dbCart[indexCartDeleted].subTotal = dbCart[indexCartDeleted].price * dbCart[indexCartDeleted].qty;
-        console.log(dbCart)
 
         dbProduct[indexdbProduct].stock += 1
     }
@@ -345,101 +369,143 @@ function handleDeleteCart(sku) {
     printProduct()
 };
 
-/**
- * buat fieldset berisi total pembayaran, uang masuk, button check out
- * saat pembelian berhasil:
- * - ada kembalian jika uang masuk > total pembayaran
- * - isi cart list hilang
- * 
- * By default semua subtotal produk di cart di sum dan masuk ke totalPembayaran
- * 
- * function handleCheckOut(){
- * INPUT uangMasuk
- * if uangMasuk >= totalBayar
- *  dbCart = []
- *  printCart()
- *  totalKembalian = uangMasuk - totalBayar
- * else
- *  alert uangMasuk kurang
- *  INPUT direset
- * }
- */
+function handleDeleteCart(sku) {
+
+    let indexCartDeleted = dbCart.findIndex(value => value.sku == sku)
+
+    let indexdbProduct = dbProduct.findIndex(value => value.sku == sku)
+
+    dbProduct[indexdbProduct].stock += dbCart[indexCartDeleted].qty
+    dbCart.splice(indexCartDeleted, 1)
+
+    printKeranjang()
+    printProduct()
+};
 
 dbUser = [];
+
 let dateNow = new Date();
 
 class User {
-    constructor(_username, _totalBayar, _totalKembalian) {
+    constructor(_username, _totalBayar, _discount) {
         this.username = _username
-        this.date = `${dateNow.getFullYear()}-${dateNow.getMonth()+1}-${dateNow.getDate()}`
+        this.date = `${dateNow.getFullYear()}-${dateNow.getMonth() + 1}-${dateNow.getDate()}`
         this.totalBayar = _totalBayar
-        this.totalKembalian = _totalKembalian
-        this.detail = [...dbCart]
+        this.discount = _discount
+        this.detail = dbCart.filter(val => val.selected == true);
     }
 };
 
+function handleSelect(sku) {
+    let cartIdx = dbCart.findIndex(val => val.sku == sku);
+    dbCart[cartIdx].selected = document.getElementById(`select-${sku}`).checked;
+
+    totalPayment()
+};
+
+function totalPayment() {
+    discount = Number(document.getElementById("discount").value);
+    totalBayar = 0;
+    totalAfterDisc = 0;
+    
+    dbCart.forEach(val => {
+        if (val.selected) {
+            totalBayar += val.subTotal
+        }
+    })
+    document.getElementById("totalBayar").innerHTML = `Rp${totalBayar.toLocaleString()}`;
+    
+    if (discount>0){
+        totalAfterDisc = totalBayar * ((100-discount)/100)
+    } else {
+        totalAfterDisc = totalBayar
+    }
+    document.getElementById("totalAfterDisc").innerHTML = `Rp${totalAfterDisc.toLocaleString()}`;
+};
+
 let omset = 0;
+
 function handleCheckOut() {
     omset = 0;
     let username = document.getElementById("username").value;
     let uangMasuk = parseInt(document.getElementById("uangMasuk").value);
-    let totalKembalian = uangMasuk - totalBayar;
+    let totalKembalian = uangMasuk - totalAfterDisc;
 
     if (username) {
-        if (uangMasuk < totalBayar) {
+        if (uangMasuk < totalAfterDisc) {
             document.getElementById("uangMasuk").value = "";
             document.getElementById("message").innerHTML = "Maaf, uang anda kurang ⚠️"
-        } else if (uangMasuk >= totalBayar) {
-            dbUser.push(new User(username, totalBayar, totalKembalian))
+        } else if (uangMasuk >= totalAfterDisc) {
+            dbUser.push(new User(username, totalBayar, discount))
             console.table(dbUser)
-            dbCart = [];
+
+            // menghapus product yg selected = true
+            // 1. mencari data yang selected == false
+            let tempCart = dbCart.filter(val => val.selected == false);
+            // 2. menyimpan datanya ke dalam cart
+            dbCart = [...tempCart];
+
             printKeranjang()
+            document.getElementById("discount").value = "";
             document.getElementById("uangMasuk").value = "";
             document.getElementById("message").innerHTML = `Kembalian anda ${totalKembalian.toLocaleString()}<br/>Terima kasih ✅`;
         }
     } else {
         alert(`Checkout gagal, masukkan username terlebih dahulu`)
     }
+
     document.getElementById("username").value = "";
 
-    document.getElementById("ledger").innerHTML = dbUser.map((value,index)=>{
+    document.getElementById("ledger").innerHTML = dbUser.map((value, index) => {
         omset += value.totalBayar
         return `<tr>
-        <td>${index+1}</td>
+        <td>${index + 1}</td>
         <td>${value.username}</td>
         <td>${value.date}</td>
         <td>${value.totalBayar.toLocaleString()}</td>
-        <td>${value.totalKembalian.toLocaleString()}</td>
+        <td>${value.discount.toString()}%</td>
         </tr>`
     }).join("")
-    
+
     document.getElementById("omset").innerHTML = omset.toLocaleString();
 }
 
-function handleReject(){
+function handleReject() {
 
-    dbCart.map((value)=>{
+    dbCart.map((value) => {
         let sku = value.sku
         let indexdbProduct = dbProduct.findIndex(val => val.sku == sku)
 
         dbProduct[indexdbProduct].stock += value.qty
     })
-    
+
     dbCart = [];
     printKeranjang()
     printProduct()
 }
 
+function handleClearCart() {
+    // 1. cari sku product yg akan dihapus
+    let filter = dbCart.filter(val => val.selected == true);
+    // 2. hapus data pada dbCart
+    filter.forEach((val) => {
+        // mengembalikan quantity ke stok product
+        let idx_dbProduct = dbProduct.findIndex(valProduct => valProduct.sku == val.sku);
 
-/**
- * 1. simpan data transaksi setiap user berhasil bayar (buat baru)
- * 2. data yang harus disimpan: username (string), date (string,pakai objek date) => ambil tahun, bulan, tanggal,
- *      totalPayment (number), change (number), detail (array of object yg ada di cart)
- * 3. reset ulang username, fieldset checkout
- * 4. data berhasil disimpan apa ngga dicek di console.log
- * 
- * fieldset tabel nama date totalbayar change
- * total omset
- * 
- * tambah tombol reject untuk pulangin semua cart ke product list
- */
+        dbProduct[idx_dbProduct].stock += val.qty
+
+        // cara pertama
+        dbCart.forEach((valCart, indexCart) => {
+            if (val.sku == valCart.sku) {
+                dbCart.splice(indexCart, 1)
+            }
+        })
+    })
+
+    // cara kedua
+    // let cartIdx = dbCart.findIndex(valCart => valCart.sku == val.sku)
+    // dbCart.splice(cartIdx, 1)
+    // })
+    printKeranjang()
+    printProduct()
+};

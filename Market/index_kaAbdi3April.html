@@ -9,7 +9,8 @@
     <style>
         table,
         th,
-        td {
+        td,
+        tr {
             border: 1px solid black;
             border-collapse: collapse;
             padding: 1vw;
@@ -29,15 +30,19 @@
                 <input type="text" id="img-product" placeholder="Image URL" />
                 <input type="text" id="name-product" placeholder="Product Name" />
                 <select id="category-product">
-                    <!-- option selected berarti secara default option itu dipilih -->
                     <option value="null" selected>Choose Category</option>
                     <option value="Food">Food</option>
-                    <option value="Drinks">Drinks</option>
+                    <option value="Drink">Drink</option>
                 </select>
                 <input type="number" id="stock-product" placeholder="Stock" />
                 <input type="number" id="price-product" placeholder="Price" />
             </form>
             <button type="button" onclick="handleSubmit()">Submit</button>
+        </fieldset>
+        <fieldset>
+            <legend>Customer</legend>
+            <input type="text" id="inUsername" />
+            <button type="button" onclick="handleCustomer()">Login</button>
         </fieldset>
         <fieldset>
             <legend>Filter Data</legend>
@@ -47,18 +52,18 @@
                 <label>By Price</label>
                 <input type="number" id="byMin" placeholder="Minimum" />
                 <input type="number" id="byMax" placeholder="Maximum" /><br />
-                <label>By Category</label>
+                <label>Category</label>
                 <select id="filter-category">
                     <option value="null" selected>Choose Category</option>
                     <option value="Food">Food</option>
-                    <option value="Drinks">Drinks</option>
+                    <option value="Drink">Drink</option>
                 </select><br />
                 <button type="button" onclick="handleFilter()">Search</button>
                 <button type="button" onclick="handleReset()">Reset</button>
             </form>
         </fieldset>
         <fieldset>
-            <legend>Product List</legend>
+            <legend>Products List</legend>
             <table>
                 <thead>
                     <tr>
@@ -97,55 +102,54 @@
 
                 </tbody>
             </table>
+
         </fieldset>
         <fieldset>
-            <legend>User Data</legend>
-            <label>Username: </label>
-            <input id="username" type="text" />
+            <legend>Checkout</legend>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h4>Total Pembayaran</h4>
+                        </td>
+                        <td>
+                            <h4 id="total">Rp. 0,-</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Uang Pembayaran</h4>
+                        </td>
+                        <td>
+                            <input type="number" id="payment" />
+                            <button type="button" onclick="handlePay()">Payment</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h6 id="message"></h6>
         </fieldset>
         <fieldset>
-            <legend>Check Out</legend>
-            <label>Total Price: </label>
-            <label id="totalBayar"></label>
-            <br />
-            <label>Discount:</label>
-            <input id="discount" type="number" />
-            <br />
-            <label>Total Payment After Discount: </label>
-            <label id="totalAfterDisc"></label>
-            <br />
-            <label>Insert your payment balance: </label>
-            <input id="uangMasuk" type="number" />
-            <br /><br />
-            <button type="button" onclick="handleCheckOut()">Check Out</button>
-            <button type="button" onclick="handleReject()">Cancel Check Out</button>
-            <br /><br />
-            <label id="message"></label>
-        </fieldset>
-        <fieldset>
-            <legend>Ledger</legend>
+            <legend>Report Transaction</legend>
             <table>
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Username</th>
                         <th>Date</th>
+                        <th>User</th>
                         <th>Total Transaction</th>
-                        <th>Discount</th>
                     </tr>
                 </thead>
-                <tbody id="ledger">
+                <tbody id="report">
 
                 </tbody>
             </table>
-            <br />
-            <label>Omzet: </label>
-            <label id="omset"></label>
+
+            <h3>Omset</h3>
+            <h3 id="omset"></h3>
         </fieldset>
     </div>
 </body>
-
-<!-- nanti script dipanggil pakai code dibawah ini krn script dibuat terpisah -->
-<script src="./script.js"></script>
+<script src="./script_kaAbdi3April.js"></script>
 
 </html>

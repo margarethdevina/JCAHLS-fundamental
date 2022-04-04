@@ -173,7 +173,7 @@ for (let i = 0; i < barang.length; i++) {
 console.log(list);
 
 //// .forEach() //// ❗❗
-// namaVariabelArray.forEach(): melooping subah data array dan tidak bisa menghasilkan array baru atau tidak menghasilkan return
+// namaVariabelArray.forEach(): melooping sebuah data array dan tidak bisa menghasilkan array baru atau tidak menghasilkan return
 // cara 1 .forEach() memakai callback function: fungsi yang dipanggil dalam sebuah fungsi
 
 // const cetak = (value, index) => {

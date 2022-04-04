@@ -234,21 +234,23 @@ function handlePay() {
         document.getElementById("message").innerHTML = "Maaf, uang anda kurang ⚠️"
     } else {
 
-        let data = {
-            idTransaction: dbTransactions.length+1,
-            username, // bisa langsung tulis username aja karena nama properti yg diinginkan sama dengan nama variabel yg mau dipanggil tapi ini cuma bisa dilakuin saat membuat objek secara literal 
-            date: `${new Date().getDate()}-${new Date().getMonth()+1}-${new Date().getFullYear()}`,
-            total,
-            change: count,
-            detail: [...dbCart]
+        if (username) {
+            let data = {
+                idTransaction: dbTransactions.length + 1,
+                username, // bisa langsung tulis username aja karena nama properti yg diinginkan sama dengan nama variabel yg mau dipanggil tapi ini cuma bisa dilakuin saat membuat objek secara literal 
+                date: `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`,
+                total,
+                change: count,
+                detail: [...dbCart]
+            }
+            dbTransactions.push(data);
+            console.table(dbTransactions);
+            printTransactions()
+            dbCart = [];
+            printKeranjang();
+            document.getElementById("message").innerHTML = `Kembalian anda ${count.toLocaleString()}<br/>Terima kasih ✅`
+            document.getElementById("payment").value = ""
         }
-        
-        dbTransactions.push(data);
-        console.table(dbTransactions);
-        dbCart = [];
-        printKeranjang();
-        document.getElementById("message").innerHTML = `Kembalian anda ${count.toLocaleString()}<br/>Terima kasih ✅`
-        document.getElementById("payment").value = ""
     }
 }
 

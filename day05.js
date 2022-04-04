@@ -96,9 +96,9 @@ let product = [
 console.log(product[0].name); // hasilnya hoodie
 
 //// Object destructuring array ////
-let data = [`Edo`,`Jr`,27];
+let data = [`Edo`, `Jr`, 27];
 let [namaDepan, namaBelakang, usia] = data; // namaDepan namaBelakang merupakan variabel baru yang terbentuk
-    // pembentukkan variabel baru itu cuma bisa dilakukan pas destructure data array
+// pembentukkan variabel baru itu cuma bisa dilakukan pas destructure data array
 
 console.log(namaDepan);
 console.log(namaBelakang);
@@ -112,12 +112,11 @@ console.log(usia);
  */
 
 // untuk looping propertinya
-for (let property in instructor){ // batasan akan otomatis menyesuaikan dengan banyak properti di objek itu
+for (let property in instructor) { // batasan akan otomatis menyesuaikan dengan banyak properti di objek itu
     console.log(property);
 }
 
 // untuk looping isi dari tiap properti
-for (let property in instructor){
+for (let property in instructor) {
     console.log(instructor[property]);
 }
-

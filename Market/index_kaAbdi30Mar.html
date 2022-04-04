@@ -41,7 +41,7 @@
         </fieldset>
         <fieldset>
             <legend>Customer</legend>
-            <input type="text" id="inUsername"/>
+            <input type="text" id="inUsername" />
             <button type="button" onclick="handleCustomer()">Login</button>
         </fieldset>
         <fieldset>
@@ -119,13 +119,32 @@
                             <h4>Uang Pembayaran</h4>
                         </td>
                         <td>
-                            <input type="number" id="payment"/>
+                            <input type="number" id="payment" />
                             <button type="button" onclick="handlePay()">Payment</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <h6 id="message"></h6>
+        </fieldset>
+        <fieldset>
+            <legend>Report Transaction</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Total Transaction</th>
+                    </tr>
+                </thead>
+                <tbody id="report">
+
+                </tbody>
+            </table>
+
+            <h3>Omset</h3>
+            <h3 id="omset"></h3>
         </fieldset>
     </div>
 </body>
